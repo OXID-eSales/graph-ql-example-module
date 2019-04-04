@@ -259,7 +259,7 @@ API.
 * The GraphQl type that we want to provide
 * The query / mutations that use our GraphQl type
 
-Now we need to put it all together. For this
+The task is now to put it all together. For this
 purpose we use the Symfony DI container that
 comes with the OXID eShop framework.
 
@@ -269,3 +269,85 @@ directory of your module. If you are not
 familiar with the Symfony DI container, you
 should read the 
 [documentation](https://symfony.com/doc/3.4/service_container.html).
+
+And this is the configuration file:
+
+```yaml
+services:
+
+  _defaults:
+    public: false
+    autowire: true
+
+  OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface:
+    class: OxidEsales\GraphQl\Sample\Dao\CategoryDao
+
+  OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType:
+    class: OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType
+
+  OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider:
+    class: OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider
+    tags: ['graphql_query_provider', 'graphql_mutation_provider']
+
+  OxidEsales\GraphQl\Sample\Service\CategoryPermissionsProvider:
+    class: OxidEsales\GraphQl\Service\PermissionsProvider
+    calls:
+      - ['addPermission', ['admin', 'mayaddcategory']]
+      - ['addPermission', ['shopadmin', 'mayaddcategory']]
+    tags: ['graphql_permissions_provider']
+```
+
+All of our implementation goes to the `services` section
+of the configuration. At the beginning we define two defaults:
+None of our services should be public (that means you can't
+fetch them from the DI container, which is a good thing;
+everything is handled within the container) and that
+Symfony should try to autowire everything (that means,
+if you type hint the parameters in the constructor of
+a service, the container searches for a service that
+matches that type hint when instantiating the service).
+
+The next two entries are trivial: We define our data access
+object as a service using the interface of the dao as
+the service key. That helps autowiring when we type hint
+a dependency with this interface. The next service is
+equally trivial, it's our category type and since this
+does not have an interface, we use the qualified class
+name itself as a key.
+
+The next entry is a tad more complicated: It defines
+our provider class. Again we use the class name itself
+as a key. But in fact this key is quite irrelevant
+because this key is never used anywhere. Instead we
+add two tags, the `graphql_query_provider` and the
+`graphql_mutation_provider`. This tags are used to
+inject the information from the provider into the
+GraphQl schema. And since we implemented queries and
+a mutation in one provider, we need both tags.
+
+And in the last entry we define the permissions
+that we want to use. Again, the key is completely
+irrelevant, so you may make up something. But it
+should be unique, so using the classpath of your
+module together with a descriptive name makes sense.
+The class itself is always the same, the `PermissionsProvider`
+class that comes with the OXID GraphQl framework.
+And now you can add permissions in the call section.
+The method, that is called, is named appropriately 
+`addPermission`, and the first parameter is the user
+group, the second a permission (which is just the
+string you use in your permission check in the
+query / mutation resolver).
+
+Currently there are four user groups:
+
+<dl>
+<dt>anonymous:</dt>
+  <dd>a logged in user without a user account</dd>
+<dt>customer:</dt>
+  <dd>a logged in user with a user account</dd>
+<dt>shopadmin:</dt>
+  <dd>a user with administration rights for a certain shop</dd>
+<dt>admin:</dt>
+  <dd>a user with global administration rights</dd> 
+</dl>

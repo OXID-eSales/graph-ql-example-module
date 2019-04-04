@@ -8,6 +8,7 @@
 namespace OxidEsales\GraphQl\Sample\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\GraphQl\Exception\ObjectNotFoundException;
 use OxidEsales\GraphQl\Sample\DataObject\Category;
 use OxidEsales\GraphQl\Utility\LegacyWrapper;
 use OxidEsales\GraphQl\Utility\LegacyWrapperInterface;
@@ -46,8 +47,7 @@ class CategoryDao implements CategoryDaoInterface
         $result = $queryBuilder->execute();
         $row = $result->fetch();
         if (! $row) {
-            // TODO mtk: Create exception in base package and use it here
-            throw new \Exception('Category not found.');
+            throw new ObjectNotFoundException("Category with id \"$categoryId\" not found.");
         }
         else {
             return $this->rowToCategory($row);
