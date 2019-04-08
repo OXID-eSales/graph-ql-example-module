@@ -38,7 +38,7 @@ class CategoryDaoTest extends TestCase
 
     public function testGetCategoryOtherShop()
     {
-        $this->expectExceptionMessage('Category not found');
+        $this->expectExceptionMessage('Category with id "30e44ab834ea42417.86131097" not found.');
         $this->categoryDao->getCategory('30e44ab834ea42417.86131097', 'de', 2);
 
     }

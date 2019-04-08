@@ -13,10 +13,10 @@ use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQl\Sample\DataObject\Category;
 use OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType;
 use OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider;
-use OxidEsales\GraphQl\Tests\Unit\Type\BaseTestType;
+use OxidEsales\GraphQl\Tests\Unit\Type\GraphQlTypeTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class CategoryTypeTest extends BaseTestType
+class CategoryTypeTest extends GraphQlTypeTestCase
 {
     /** @var  CategoryDaoInterface|MockObject */
     private $categoryDao;

@@ -241,6 +241,16 @@ write your dao/service classes in a
 generic way that works in all shop
 environments.
 
+> ####Caveat
+>
+> If you are using shop models to load
+> data, you can't provide the language / shopid.
+> These are already set on bootstrap.
+> Currently there is not yet a mechanism
+> in the shop bootstrap to set this from
+> an authentication token. But this will
+> be implemented soon.
+
 After checking the permissions you should
 keep the logic quite simple. All business
 logic should already be implemented in your
@@ -248,6 +258,18 @@ dao / services classes. Here you shouldn't
 do nothing more than perhaps configure
 service calls according to arguments of
 the query / mutation.
+
+You can test your type / provider quite
+easily. Look at the unit test `CategoryTypeTest`.
+It inherts from the `GraphQlTypeTestCase` which
+provides some helper methods. You can set
+permissions before excuting a query; and the
+query will be executed with a default context
+unless you do provide your own context
+when calling the execute method. The setup
+method shows you an example how to set up
+the schema for testing the queries and mutations
+that you provide for your GraphQl Type.
 
 ### Step 4: Tying it all together
 
@@ -351,3 +373,27 @@ Currently there are four user groups:
 <dt>admin:</dt>
   <dd>a user with global administration rights</dd> 
 </dl>
+
+Look at the `services.yaml` file of the OXID graphql base
+module to see which permissions are already set for
+these groups.
+
+If everything is tied together, you should write
+acceptance tests for all your queries and mutations.
+Again there is an example in the `Acceptance` folder
+under tests. This `CategoryTest` inherits from
+`BaseGraphQlAcceptanceTestCase` that provides a setup
+of the DI container. You really need not care about this,
+just use the `executeQuery` method to run a query / mutation.
+You will find the result of query in three properties
+of the test case:
+
+* `$this->queryResult` contains data / errors that the
+  client will receive
+* `$this-httpStatus` contains unsurpringly the http status the client will
+  receive
+* `$this->logResult` contains all errors that are normally
+  written to the log file
+  
+This allows you to write nearly complete end to end
+tests without involving an http server.

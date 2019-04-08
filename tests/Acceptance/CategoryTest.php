@@ -8,9 +8,9 @@
 namespace OxidEsales\GraphQl\Sample\Tests\Acceptance;
 
 use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
-use OxidEsales\GraphQl\Tests\Acceptance\BaseAcceptanceTestCase;
+use OxidEsales\GraphQl\Tests\Acceptance\BaseGraphQlAcceptanceTestCase;
 
-class CategoryTest extends BaseAcceptanceTestCase
+class CategoryTest extends BaseGraphQlAcceptanceTestCase
 {
 
     private $rootId;
