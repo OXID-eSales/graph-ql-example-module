@@ -241,7 +241,7 @@ write your dao/service classes in a
 generic way that works in all shop
 environments.
 
-> ####Caveat
+> *Caveat*
 >
 > If you are using shop models to load
 > data, you can't provide the language / shopid.
@@ -397,3 +397,19 @@ of the test case:
   
 This allows you to write nearly complete end to end
 tests without involving an http server.
+
+To run the acceptance tests, you need to activate the
+module in the test configuration of your OXID project.
+So for this example module, the `test_config.yml` in the root
+directory of your project should have the following entries:
+
+```yaml
+mandatory_parameters:
+    ...
+    partial_module_paths: 'oe/graphql-base,oe/graphql-example'
+    ...
+optional_parameters:
+    ...
+    activate_all_modules: true
+    ...
+```
