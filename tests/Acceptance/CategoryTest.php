@@ -41,7 +41,7 @@ query TestQuery {
 EOQ;
         $this->executeQuery($query);
 
-        $this->assertEquals(200, $this->httpStatus);
+        $this->assertHttpStatusOK();
         $this->assertEquals('subcategory1', $this->queryResult['data']['category']['name']);
     }
 
@@ -57,11 +57,9 @@ query TestQuery {
 EOQ;
         $this->executeQuery($query);
 
-        $this->assertEquals(400, $this->httpStatus);
-        $this->assertEquals(
-            'Category with id "nonexistingid" not found.',
-            $this->queryResult['errors'][0]['message']);
-        $this->assertTrue(0 === strpos($this->logResult, 'Category with id "nonexistingid" not found.'));
+        $this->assertHttpStatus(404);
+        $this->assertErrorMessage('Category with id "nonexistingid" not found.');
+        $this->assertLogMessageContains('Category with id "nonexistingid" not found.');
     }
 
     public function testGetRootCategories()
@@ -76,7 +74,7 @@ query TestQuery {
 EOQ;
         $this->executeQuery($query);
 
-        $this->assertEquals(200, $this->httpStatus);
+        $this->assertHttpStatusOK();
         $found = false;
         foreach ($this->queryResult['data']['categories'] as $categoryArray) {
             if ($categoryArray['name'] == 'rootcategory') {
@@ -98,7 +96,7 @@ query TestQuery {
 EOQ;
         $this->executeQuery($query);
 
-        $this->assertEquals(200, $this->httpStatus);
+        $this->assertHttpStatusOK();
         $this->assertEquals(2, sizeof($this->queryResult['data']['categories']));
     }
 
@@ -112,7 +110,7 @@ mutation TestMutation {
 EOQ;
         $this->executeQuery($query, 'admin');
 
-        $this->assertEquals(200, $this->httpStatus);
+        $this->assertHttpStatusOK();
         $this->assertEquals(32, strlen($this->queryResult['data']['addCategory']));
     }
 
@@ -126,7 +124,7 @@ mutation TestMutation {
 EOQ;
         $this->executeQuery($query, 'customer');
 
-        $this->assertEquals(403, $this->httpStatus);
+        $this->assertHttpStatus(403);
     }
 
 }
