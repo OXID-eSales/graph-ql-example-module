@@ -1,22 +1,29 @@
 services:
 
-  _defaults:
+  OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface:
+    class: OxidEsales\GraphQl\Sample\Dao\CategoryDao
     public: false
     autowire: true
 
-  OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface:
-    class: OxidEsales\GraphQl\Sample\Dao\CategoryDao
-
   OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType:
     class: OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType
+    public: false
+    autowire: true
 
   OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider:
     class: OxidEsales\GraphQl\Sample\Type\Provider\CategoryProvider
-    tags: ['graphql_query_provider', 'graphql_mutation_provider']
+    public: false
+    autowire: true
+    tags:
+      - {name: 'graphql_query_provider'}
+      - {name: 'graphql_mutation_provider'}
 
   OxidEsales\GraphQl\Sample\Service\CategoryPermissionsProvider:
     class: OxidEsales\GraphQl\Service\PermissionsProvider
+    public: false
+    autowire: true
     calls:
       - ['addPermission', ['admin', 'mayaddcategory']]
       - ['addPermission', ['shopadmin', 'mayaddcategory']]
-    tags: ['graphql_permissions_provider']
+    tags:
+      - {name: 'graphql_permissions_provider'}
