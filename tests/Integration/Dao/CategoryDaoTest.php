@@ -10,6 +10,7 @@ namespace OxidEsales\GraphQl\Sample\Tests\Integration\Dao;
 
 
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\GraphQl\Exception\ObjectNotFoundException;
 use OxidEsales\GraphQl\Sample\Dao\CategoryDao;
 use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
 use PHPUnit\Framework\TestCase;
@@ -55,7 +56,6 @@ class CategoryDaoTest extends TestCase
     {
         $this->expectException(ObjectNotFoundException::class);
         $this->expectExceptionMessage('Category with id "' . $this->categoryIdRoot . '" not found.');
-                                                                    '" not found.');
         $this->categoryDao->getCategory($this->categoryIdRoot, 'de', 2);
 
     }
