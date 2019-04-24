@@ -20,26 +20,43 @@ class CategoryDaoTest extends TestCase
     /** @var  CategoryDao $categoryDao */
     private $categoryDao;
 
+    /** @var  string $categoryIdRoot */
+    private $categoryIdRoot;
+
+    /** @var  string $categoryIdSub1 */
+    private $categoryIdSub1;
+
+    /** @var  string $categoryIdSub2 */
+    private $categoryIdSub2;
+
     public function setUp()
     {
         $containerFactory = new TestContainerFactory();
         $container = $containerFactory->create();
         $container->compile();
         $this->categoryDao = $container->get(CategoryDaoInterface::class);
+
+        $this->categoryIdRoot = $this->categoryDao->addCategory(['Test deutsch', 'Test english'], 1);
+        $this->categoryIdSub1 = $this->categoryDao->addCategory(['Unterkategorie 1', 'sub category 1'], 1,
+            $this->categoryIdRoot);
+        $this->categoryIdSub2 = $this->categoryDao->addCategory(['Unterkategorie 2', 'sub category 2'], 1,
+            $this->categoryIdRoot);
     }
 
     public function testGetCategory()
     {
-        $category = $this->categoryDao->getCategory('30e44ab834ea42417.86131097', 'de', 1);
-        $this->assertEquals('30e44ab834ea42417.86131097', $category->getId());
-        $this->assertEquals('Für Ihn', $category->getName());
+        $category = $this->categoryDao->getCategory($this->categoryIdRoot, 'de', 1);
+        $this->assertEquals($this->categoryIdRoot, $category->getId());
+        $this->assertEquals('Test deutsch', $category->getName());
 
     }
 
     public function testGetCategoryOtherShop()
     {
-        $this->expectExceptionMessage('Category with id "30e44ab834ea42417.86131097" not found.');
-        $this->categoryDao->getCategory('30e44ab834ea42417.86131097', 'de', 2);
+        $this->expectException(ObjectNotFoundException::class);
+        $this->expectExceptionMessage('Category with id "' . $this->categoryIdRoot . '" not found.');
+                                                                    '" not found.');
+        $this->categoryDao->getCategory($this->categoryIdRoot, 'de', 2);
 
     }
 
@@ -52,13 +69,26 @@ class CategoryDaoTest extends TestCase
     public function testGetRootCategories()
     {
         $rootCategories = $this->categoryDao->getCategories('de', 1);
-        $this->assertEquals(7, sizeof($rootCategories));
+        $found = false;
+        foreach ($rootCategories as $rootCategory) {
+            /** @var \OxidEsales\GraphQl\Sample\DataObject\Category $rootCategory */
+            if ($rootCategory->getId() == $this->categoryIdRoot) {
+                $found = true;
+            }
+            if ($rootCategory->getId() == $this->categoryIdSub1) {
+                $this->fail('This should not be in the list of root categories.');
+            }
+            if ($rootCategory->getId() == $this->categoryIdSub2) {
+                $this->fail('This should not be in the list of root categories.');
+            }
+        }
+        $this->assertTrue($found);
 
     }
 
     public function testGetSubCategories()
     {
-        $subCategories = $this->categoryDao->getCategories('de', 1, '30e44ab834ea42417.86131097');
+        $subCategories = $this->categoryDao->getCategories('de', 1, $this->categoryIdRoot);
         $this->assertEquals(2, sizeof($subCategories));
     }
 
