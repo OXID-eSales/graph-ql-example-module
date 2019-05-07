@@ -5,7 +5,7 @@ services:
     autowire: true
 
   OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface:
-    class: OxidEsales\GraphQl\Sample\Dao\CategoryDao
+    class: OxidEsales\GraphQl\Sample\Dao\OxObjectCategoryDao
 
   OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType:
     class: OxidEsales\GraphQl\Sample\Type\ObjectType\CategoryType

@@ -33,7 +33,7 @@ class CategoryDao implements CategoryDaoInterface
 
     public function getCategory(string $categoryId, string $lang, int $shopId): Category
     {
-        $viewName = 'oxv_oxcategories_' . $lang;
+        $viewName = 'oxv_oxcategories_' . $shopId . '_' . $lang;
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select(['OXTITLE', 'OXID', 'OXPARENTID'])
             ->from($viewName)
@@ -56,7 +56,7 @@ class CategoryDao implements CategoryDaoInterface
 
     public function getCategories(string $lang, int $shopId, $parentid=null)
     {
-        $viewName = 'oxv_oxcategories_' . $lang;
+        $viewName = 'oxv_oxcategories_' . $shopId . '_' . $lang;
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select(['OXTITLE', 'OXID', 'OXPARENTID'])
             ->from($viewName)
@@ -85,7 +85,7 @@ class CategoryDao implements CategoryDaoInterface
     {
 
         $queryBuilder = $this->queryBuilderFactory->create();
-        $values = ['OXSHOPID' => ':shopid', 'OXTITLE' => ':title'];
+        $values = ['OXSHOPID' => $shopId, 'OXTITLE' => ':title'];
         $queryBuilder->setParameter('title', $names[0]);
         for ($i = 1; $i < sizeof($names); $i++) {
             $values["OXTITLE_$i"] = ":title_$i";
@@ -105,7 +105,32 @@ class CategoryDao implements CategoryDaoInterface
 
         $queryBuilder->insert('oxcategories')->values($values)->execute();
 
+        $queryBuilderJoin = $this->queryBuilderFactory->create();
+        $queryBuilderJoin->insert('oxcategories2shop')
+            ->values(['OXSHOPID' => ':shopid', 'OXMAPOBJECTID' => ':mapid'])
+            ->setParameter('shopid', $shopId)
+            ->setParameter('mapid', $this->getMapId($id))
+            ->execute();
+
         return $id;
+    }
+
+    private function getMapId($categoryId)
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select(['OXMAPID', 'OXID', 'OXPARENTID'])
+            ->from('oxcategories')
+            ->where($queryBuilder->expr()->eq('OXID', ':oxid'))
+            ->setParameter('oxid', $categoryId);
+        $result = $queryBuilder->execute();
+        $row = $result->fetch();
+        if (! $row) {
+            throw new ObjectNotFoundException("Category with id \"$categoryId\" not found.");
+        }
+        else {
+            return $row['OXMAPID'];
+        }
+
     }
 
     private function rowToCategory($row)

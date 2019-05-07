@@ -13,36 +13,68 @@ use OxidEsales\GraphQl\Tests\Acceptance\BaseGraphQlAcceptanceTestCase;
 class CategoryTest extends BaseGraphQlAcceptanceTestCase
 {
 
-    private $rootId;
+    use CategorySetupTrait;
 
-    private $subId1;
-
-    private $subId2;
-
-    public function setUp()
-    {
-        parent::setUp();
-        /** @var CategoryDaoInterface $categoryDao */
-        $categoryDao = $this->container->get(CategoryDaoInterface::class);
-        $this->rootId = $categoryDao->addCategory(["rootcategory"], $this->getShopId());
-        $this->subId1 = $categoryDao->addCategory(["subcategory1"], $this->getShopId(), $this->rootId);
-        $this->subId2 = $categoryDao->addCategory(["subcategory2"], $this->getShopId(), $this->rootId);
-    }
-
-    public function testGetCategory()
+    public function testGetCategoryEn()
     {
 
         $query = <<<EOQ
 query TestQuery { 
-    category (categoryid: "$this->subId1") {
+    category (categoryid: "$this->subId1S1") {
         name
     }
 }
 EOQ;
-        $this->executeQuery($query);
+        $token = $this->createToken('anonymous');
+        $token->setLang('en');
+        $token->setShopid(1);
+
+        $this->executeQueryWithToken($query, $token);
 
         $this->assertHttpStatusOK();
-        $this->assertEquals('subcategory1', $this->queryResult['data']['category']['name']);
+        $this->assertEquals('subcategory 1-1', $this->queryResult['data']['category']['name']);
+
+    }
+
+    public function testGetCategoryDe()
+    {
+
+        $query = <<<EOQ
+query TestQuery { 
+    category (categoryid: "$this->subId1S1") {
+        name
+    }
+}
+EOQ;
+        $token = $this->createToken('anonymous');
+        $token->setLang('de');
+        $token->setShopid(1);
+
+        $this->executeQueryWithToken($query, $token);
+
+        $this->assertHttpStatusOK();
+        $this->assertEquals('Unterkategorie 1-1', $this->queryResult['data']['category']['name']);
+
+    }
+
+    public function testGetCategoryShop2()
+    {
+
+        $query = <<<EOQ
+query TestQuery { 
+    category (categoryid: "$this->subId1S1") {
+        name
+    }
+}
+EOQ;
+        $token = $this->createToken('anonymous');
+        $token->setLang('de');
+        $token->setShopid(2);
+
+        $this->executeQueryWithToken($query, $token);
+
+        $this->assertHttpStatus(404);
+
     }
 
     public function testNotFound()
@@ -89,7 +121,7 @@ EOQ;
 
         $query = <<<EOQ
 query TestQuery { 
-    categories (parentid: "$this->rootId") {
+    categories (parentid: "$this->rootIdS1") {
         name
     }
 }
@@ -105,7 +137,7 @@ EOQ;
 
         $query = <<<EOQ
 mutation TestMutation { 
-    addCategory (names: ["Neue Kategorie", "New category"], parentid: "$this->rootId")
+    addCategory (names: ["Neue Kategorie", "New category"], parentid: "$this->rootIdS1")
 }
 EOQ;
         $this->executeQuery($query, 'admin');
@@ -119,7 +151,7 @@ EOQ;
 
         $query = <<<EOQ
 mutation TestMutation { 
-    addCategory (names: ["Neue Kategorie", "New category"], parentid: "$this->rootId")
+    addCategory (names: ["Neue Kategorie", "New category"], parentid: "$this->rootIdS1")
 }
 EOQ;
         $this->executeQuery($query, 'customer');
