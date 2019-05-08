@@ -71,6 +71,19 @@ only guaranteed if you support the more advanced features.
 And the effort is small, if you do it right from the
 beginning.
 
+If you use the model classes from the shop to load the
+data, then you won't need these parameters, because the
+`load()` method on the model object does not allow you
+to specify language or shop id (in fact the OXID GraphQl
+framework handles the language and shop id for you in this
+case). Nevertheless you should specify the parameters
+in your interface, even if you won't use them in your
+implementation. You might change the implementation later
+because of performance issues, so you should prepare
+for this. You find an alternative `CategoryDao` called
+`OxObjectCategoryDao` in the source code that uses the
+model object from the shop.
+
 After designing the interface and creating the dao class
 with empty methods, you should first write a test class
 for your interface. This is called test driven development
