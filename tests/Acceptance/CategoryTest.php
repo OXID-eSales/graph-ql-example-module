@@ -109,7 +109,7 @@ EOQ;
         $this->assertHttpStatusOK();
         $found = false;
         foreach ($this->queryResult['data']['categories'] as $categoryArray) {
-            if ($categoryArray['name'] == 'rootcategory') {
+            if ($categoryArray['name'] == 'Rootkategorie 1') {
                 $found = true;
             }
         }
@@ -140,7 +140,8 @@ mutation TestMutation {
     addCategory (names: ["Neue Kategorie", "New category"], parentid: "$this->rootIdS1")
 }
 EOQ;
-        $this->executeQuery($query, 'admin');
+        $token = $this->createToken('admin');
+        $this->executeQueryWithToken($query, $token);
 
         $this->assertHttpStatusOK();
         $this->assertEquals(32, strlen($this->queryResult['data']['addCategory']));
@@ -154,7 +155,8 @@ mutation TestMutation {
     addCategory (names: ["Neue Kategorie", "New category"], parentid: "$this->rootIdS1")
 }
 EOQ;
-        $this->executeQuery($query, 'customer');
+        $token = $this->createToken('customer');
+        $this->executeQueryWithToken($query, $token);
 
         $this->assertHttpStatus(403);
     }

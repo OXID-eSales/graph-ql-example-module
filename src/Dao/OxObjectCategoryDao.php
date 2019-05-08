@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQl\Sample\Dao;
 
+use OxidEsales\GraphQl\Exception\ObjectNotFoundException;
 use OxidEsales\GraphQl\Sample\DataObject\Category;
 
 
@@ -28,8 +29,12 @@ class OxObjectCategoryDao extends CategoryDao implements CategoryDaoInterface
      */
     public function getCategory(string $categoryId, string $lang, int $shopId)
     {
+        /** @var \OxidEsales\Eshop\Application\Model\Category $oxCategory */
         $oxCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
         $oxCategory->load($categoryId);
+        if (! $oxCategory->isLoaded()) {
+            throw new ObjectNotFoundException("Category with id \"$categoryId\" not found.");
+        }
         /** @var Category $category */
         $category = new Category();
         $category->setId($categoryId);
