@@ -16,16 +16,23 @@
   },
   "version": "0.0.1",
   "require": {
-    "php": "^7.0",
-    "oxid-esales/graphql-base": "^0"
+    "php": "^7.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "~6"
+    "phpunit/phpunit": "~6",
+    "friendsofphp/php-cs-fixer": "^2"
   },
   "autoload": {
     "psr-4": {
       "OxidEsales\\GraphQl\\Sample\\": "src",
       "OxidEsales\\GraphQl\\Sample\\Tests\\": "tests"
     }
+  },
+  "scripts": {
+    "lint": "php-cs-fixer fix -v",
+    "test:lint": "php-cs-fixer fix -v --dry-run",
+    "test": [
+        "@test:lint"
+    ]
   }
 }

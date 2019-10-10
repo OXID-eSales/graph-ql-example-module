@@ -7,7 +7,7 @@
 
 namespace OxidEsales\GraphQl\Sample\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Common\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQl\Exception\ObjectNotFoundException;
 use OxidEsales\GraphQl\Sample\DataObject\Category;
 use OxidEsales\GraphQl\Utility\LegacyWrapper;
@@ -16,20 +16,45 @@ use OxidEsales\GraphQl\Utility\LegacyWrapperInterface;
 class CategoryDao implements CategoryDaoInterface
 {
 
-    /** @var  QueryBuilderFactoryInterface $queryBuilderFactory */
+    /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
     private $queryBuilderFactory;
 
-    /** @var  LegacyWrapperInterface */
+    /** @var LegacyWrapperInterface */
     private $legacyWrapper;
 
     public function __construct(
         QueryBuilderFactoryInterface $queryBuilderFactory,
         LegacyWrapper $legacyWrapper
-    )
-    {
+    ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
         $this->legacyWrapper = $legacyWrapper;
     }
+
+    public function getCategoryById(string $id, int $shopId): Category
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID'])
+                     ->from('oxcategories')
+                     ->where($queryBuilder->expr()->andX(
+                         $queryBuilder->expr()->eq('OXID', ':oxid'),
+                         $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
+                     ))
+                     ->setParameter('oxid', $id)
+                     ->setParameter('shopid', $shopId);
+        $result = $queryBuilder->execute();
+        $row = $result->fetch();
+        if (!$row) {
+            throw new ObjectNotFoundException("Category with id \"$id\" not found.");
+        }
+        $category = new Category(
+            $row['OXID'],
+            $row['OXTITLE'],
+            $row['OXPARENTID']
+        );
+        return $category;
+    }
+
+    /*
 
     public function getCategory(string $categoryId, string $lang, int $shopId): Category
     {
@@ -146,4 +171,5 @@ class CategoryDao implements CategoryDaoInterface
         }
         return $category;
     }
+     */
 }

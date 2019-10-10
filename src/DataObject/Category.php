@@ -7,33 +7,38 @@
 
 namespace OxidEsales\GraphQl\Sample\DataObject;
 
+use TheCodingMachine\GraphQLite\Annotations\Field;
+use TheCodingMachine\GraphQLite\Annotations\Type;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
+use OxidEsales\Eshop\Core\Registry;
+
+/**
+ * @Type()
+ */
 class Category
 {
-    /** @var  string $name */
-    private $name;
-    /** @var  string $id */
+    /** @var string */
     private $id;
-    /** @var  string|null $parentid */
+
+    /** @var string */
+    private $name;
+
+    /** @var string */
     private $parentid;
 
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name)
-    {
+    public function __construct(
+        string $id,
+        string $name,
+        string $parentid
+    ) {
+        $this->id = $id;
         $this->name = $name;
+        $this->parentid = $parentid;
     }
 
     /**
-     * @return string
+     * @Field(outputType="ID")
      */
     public function getId(): string
     {
@@ -41,27 +46,22 @@ class Category
     }
 
     /**
-     * @param string $id
+     * @Field()
      */
-    public function setId(string $id)
+    public function getName(): string
     {
-        $this->id = $id;
+        return $this->name;
     }
 
     /**
-     * @return null|string
+     * @Field()
      */
-    public function getParentid()
+    public function getParent(): ?self
     {
-        return $this->parentid;
+        // TODO circular reference
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(CategoryDaoInterface::class)
+            ->getCategoryById($this->parentid, 1);
     }
-
-    /**
-     * @param null|string $parentid
-     */
-    public function setParentid($parentid)
-    {
-        $this->parentid = $parentid;
-    }
-
 }
