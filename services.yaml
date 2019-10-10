@@ -11,3 +11,7 @@ services:
   OxidEsales\GraphQl\Sample\Controllers\:
     resource: 'src/Controllers/*'
     public: true
+
+  OxidEsales\GraphQl\Sample\Framework\NamespaceMapper:
+    class: OxidEsales\GraphQl\Sample\Framework\NamespaceMapper
+    tags: ['graphql_namespace_mapper']
