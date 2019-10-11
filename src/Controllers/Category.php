@@ -7,10 +7,10 @@
 
 namespace OxidEsales\GraphQl\Sample\Controllers;
 
-use TheCodingMachine\GraphQLite\Annotations\Query;
 use OxidEsales\GraphQl\Framework\AppContext;
 use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQl\Sample\DataObject\Category as CategoryDataObject;
+use TheCodingMachine\GraphQLite\Annotations\Query;
 
 class Category
 {

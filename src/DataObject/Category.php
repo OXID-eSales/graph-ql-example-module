@@ -7,11 +7,10 @@
 
 namespace OxidEsales\GraphQl\Sample\DataObject;
 
-use TheCodingMachine\GraphQLite\Annotations\Field;
-use TheCodingMachine\GraphQLite\Annotations\Type;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
-use OxidEsales\Eshop\Core\Registry;
+use TheCodingMachine\GraphQLite\Annotations\Field;
+use TheCodingMachine\GraphQLite\Annotations\Type;
 
 /**
  * @Type()
