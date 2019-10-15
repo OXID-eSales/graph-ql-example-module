@@ -10,8 +10,6 @@ namespace OxidEsales\GraphQl\Sample\Dao;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQl\Exception\ObjectNotFoundException;
 use OxidEsales\GraphQl\Sample\DataObject\Category;
-use OxidEsales\GraphQl\Utility\LegacyWrapper;
-use OxidEsales\GraphQl\Utility\LegacyWrapperInterface;
 
 class CategoryDao implements CategoryDaoInterface
 {
@@ -19,15 +17,10 @@ class CategoryDao implements CategoryDaoInterface
     /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
     private $queryBuilderFactory;
 
-    /** @var LegacyWrapperInterface */
-    private $legacyWrapper;
-
     public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory,
-        LegacyWrapper $legacyWrapper
+        QueryBuilderFactoryInterface $queryBuilderFactory
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
-        $this->legacyWrapper = $legacyWrapper;
     }
 
     public function getCategoryById(string $id, int $shopId): Category
