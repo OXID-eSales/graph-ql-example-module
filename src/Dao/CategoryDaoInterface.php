@@ -5,9 +5,9 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQl\Sample\Dao;
+namespace OxidEsales\GraphQL\Sample\Dao;
 
-use OxidEsales\GraphQl\Sample\DataObject\Category;
+use OxidEsales\GraphQL\Sample\DataObject\Category;
 
 interface CategoryDaoInterface
 {

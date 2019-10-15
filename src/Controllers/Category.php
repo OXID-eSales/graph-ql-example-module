@@ -5,11 +5,11 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQl\Sample\Controllers;
+namespace OxidEsales\GraphQL\Sample\Controllers;
 
-use OxidEsales\GraphQl\Framework\AppContext;
-use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
-use OxidEsales\GraphQl\Sample\DataObject\Category as CategoryDataObject;
+use OxidEsales\GraphQL\Framework\AppContext;
+use OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Sample\DataObject\Category as CategoryDataObject;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 
 class Category

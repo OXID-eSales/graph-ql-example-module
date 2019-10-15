@@ -4,14 +4,14 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface:
-    class: OxidEsales\GraphQl\Sample\Dao\CategoryDao
+  OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface:
+    class: OxidEsales\GraphQL\Sample\Dao\CategoryDao
     public: true
 
-  OxidEsales\GraphQl\Sample\Controllers\:
+  OxidEsales\GraphQL\Sample\Controllers\:
     resource: 'src/Controllers/*'
     public: true
 
-  OxidEsales\GraphQl\Sample\Framework\NamespaceMapper:
-    class: OxidEsales\GraphQl\Sample\Framework\NamespaceMapper
+  OxidEsales\GraphQL\Sample\Framework\NamespaceMapper:
+    class: OxidEsales\GraphQL\Sample\Framework\NamespaceMapper
     tags: ['graphql_namespace_mapper']

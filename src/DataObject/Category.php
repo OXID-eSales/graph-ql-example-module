@@ -5,10 +5,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQl\Sample\DataObject;
+namespace OxidEsales\GraphQL\Sample\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\GraphQl\Sample\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 

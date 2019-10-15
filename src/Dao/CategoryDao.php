@@ -5,10 +5,10 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQl\Sample\Dao;
+namespace OxidEsales\GraphQL\Sample\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\GraphQl\Sample\DataObject\Category;
+use OxidEsales\GraphQL\Sample\DataObject\Category;
 
 class CategoryDao implements CategoryDaoInterface
 {
