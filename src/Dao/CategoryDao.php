@@ -8,7 +8,6 @@
 namespace OxidEsales\GraphQl\Sample\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\GraphQl\Exception\ObjectNotFoundException;
 use OxidEsales\GraphQl\Sample\DataObject\Category;
 
 class CategoryDao implements CategoryDaoInterface
@@ -37,7 +36,7 @@ class CategoryDao implements CategoryDaoInterface
         $result = $queryBuilder->execute();
         $row = $result->fetch();
         if (!$row) {
-            throw new ObjectNotFoundException("Category with id \"$id\" not found.");
+            throw new \Exception("Category with id \"$id\" not found.");
         }
         $category = new Category(
             $row['OXID'],
@@ -45,6 +44,33 @@ class CategoryDao implements CategoryDaoInterface
             $row['OXPARENTID']
         );
         return $category;
+    }
+
+    /**
+     * @return Category[]
+     */
+    public function getCategoriesByParentId(string $parentid, int $shopId): array
+    {
+        $categories = [];
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID'])
+                     ->from('oxcategories')
+                     ->where($queryBuilder->expr()->andX(
+                         $queryBuilder->expr()->eq('OXPARENTID', ':oxparentid'),
+                         $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
+                     ))
+                     ->setParameter('oxparentid', $parentid)
+                     ->setParameter('shopid', $shopId);
+        $result = $queryBuilder->execute();
+
+        foreach ($result as $row) {
+            $categories[] = new Category(
+                $row['OXID'],
+                $row['OXTITLE'],
+                $row['OXPARENTID']
+            );
+        }
+        return $categories;
     }
 
     /*

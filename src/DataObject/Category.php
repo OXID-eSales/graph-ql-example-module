@@ -63,4 +63,17 @@ class Category
             ->get(CategoryDaoInterface::class)
             ->getCategoryById($this->parentid, 1);
     }
+
+    /**
+     * @Field()
+     * @return null|Category[]
+     */
+    public function getChilds(): ?array
+    {
+        // TODO circular reference
+        return ContainerFactory::getInstance()
+            ->getContainer()
+            ->get(CategoryDaoInterface::class)
+            ->getCategoriesByParentId($this->id, 1);
+    }
 }

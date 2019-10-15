@@ -38,4 +38,19 @@ class Category
             $this->context->getCurrentShopId()
         );
     }
+
+    /**
+     * @Query
+     * @return CategoryDataObject[]
+     */
+    public function categories(string $id = null): array
+    {
+        if ($id === null) {
+            $id = 'oxrootid';
+        }
+        return $this->categoryDao->getCategoriesByParentId(
+            $id,
+            $this->context->getCurrentShopId()
+        );
+    }
 }
