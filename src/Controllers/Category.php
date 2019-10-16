@@ -7,24 +7,24 @@
 
 namespace OxidEsales\GraphQL\Sample\Controllers;
 
-use OxidEsales\GraphQL\Framework\AppContext;
 use OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Sample\DataObject\Category as CategoryDataObject;
+use OxidEsales\GraphQL\Service\EnvironmentServiceInterface;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 
 class Category
 {
-    /** @var AppContext */
-    protected $context;
+    /** @var EnvironmentServiceInterface */
+    protected $environment;
 
     /** @var CategoryDaoInterface */
     protected $categoryDao;
 
     public function __construct(
-        AppContext $context,
+        EnvironmentServiceInterface $environment,
         CategoryDaoInterface $userDao
     ) {
-        $this->context = $context;
+        $this->environment = $environment;
         $this->categoryDao = $userDao;
     }
  
@@ -35,7 +35,7 @@ class Category
     {
         return $this->categoryDao->getCategoryById(
             $id,
-            $this->context->getCurrentShopId()
+            $this->environment->getShopId()
         );
     }
 
@@ -50,7 +50,7 @@ class Category
         }
         return $this->categoryDao->getCategoriesByParentId(
             $id,
-            $this->context->getCurrentShopId()
+            $this->environment->getShopId()
         );
     }
 }
