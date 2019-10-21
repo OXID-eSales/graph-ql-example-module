@@ -6,10 +6,12 @@ services:
 
   OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface:
     class: OxidEsales\GraphQL\Sample\Dao\CategoryDao
-    public: true
 
-  OxidEsales\GraphQL\Sample\Controllers\:
-    resource: 'src/Controllers/*'
+  OxidEsales\GraphQL\Sample\Dao\UserDaoInterface:
+    class: OxidEsales\GraphQL\Sample\Dao\UserDao
+
+  OxidEsales\GraphQL\Sample\Controller\:
+    resource: 'src/Controller/*'
     public: true
 
   OxidEsales\GraphQL\Sample\Framework\NamespaceMapper:
