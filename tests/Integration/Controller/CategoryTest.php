@@ -32,7 +32,6 @@ class CategoryTest extends TestCase
     public function testGetCategorieListWithoutParams()
     {
         $this->execQuery('query { categories {id, name}}');
-        print_r(static::$queryResult);
         $this->assertEquals(
             200,
             static::$queryResult['status']
