@@ -37,5 +37,4 @@ class CategoryTest extends TestCase
             static::$queryResult['status']
         );
     }
-
 }

@@ -7,9 +7,6 @@ services:
   OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface:
     class: OxidEsales\GraphQL\Sample\Dao\CategoryDao
 
-  OxidEsales\GraphQL\Sample\Dao\UserDaoInterface:
-    class: OxidEsales\GraphQL\Sample\Dao\UserDao
-
   OxidEsales\GraphQL\Sample\Controller\:
     resource: 'src/Controller/*'
     public: true
