@@ -2,9 +2,9 @@
   "name": "oxid-esales/graphql-example",
   "description": "OXID GraphQL Example",
   "type": "oxideshop-module",
-  "keywords": ["oxid", "modules", "eShop"],
+  "keywords": ["oxid", "modules", "eShop", "GraphQL"],
   "homepage": "https://www.oxid-esales.com",
-  "license": ["GPL-3.0", "proprietary"],
+  "license": "GPL-3.0",
   "extra": {
     "oxideshop": {
       "target-directory": "oe/graphql-example",
