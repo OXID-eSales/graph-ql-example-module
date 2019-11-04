@@ -1,13 +1,16 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\GraphQL\Sample\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Sample\DataObject\Category as CategoryDataObject;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -17,12 +20,17 @@ class Category
     /** @var CategoryDaoInterface */
     protected $categoryDao;
 
+    /** @var LegacyServiceInterface */
+    private $legacyService = null;
+
     public function __construct(
-        CategoryDaoInterface $userDao
+        CategoryDaoInterface $userDao,
+        LegacyServiceInterface $legacyService
     ) {
         $this->categoryDao = $userDao;
+        $this->legacyService = $legacyService;
     }
- 
+
     /**
      * @Query
      */
@@ -30,7 +38,7 @@ class Category
     {
         return $this->categoryDao->getCategoryById(
             $id,
-            Registry::getConfig()->getShopId()
+            $this->legacyService->getShopId()
         );
     }
 
@@ -45,7 +53,7 @@ class Category
         }
         return $this->categoryDao->getCategoriesByParentId(
             $id,
-            Registry::getConfig()->getShopId()
+            $this->legacyService->getShopId()
         );
     }
 }

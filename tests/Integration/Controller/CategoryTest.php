@@ -1,13 +1,15 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\GraphQL\Sample\Tests\Integration\Controller;
 
-use OxidEsales\GraphQL\Tests\Integration\TestCase;
+use OxidEsales\GraphQL\Base\Tests\Integration\TestCase;
 
 class CategoryTest extends TestCase
 {

@@ -1,27 +1,29 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\GraphQL\Sample\Framework;
 
-use OxidEsales\GraphQL\Framework\NamespaceMapperInterface;
+use OxidEsales\GraphQL\Base\Framework\NamespaceMapperInterface;
 
 class NamespaceMapper implements NamespaceMapperInterface
 {
     public function getControllerNamespaceMapping(): array
     {
         return [
-            '\\OxidEsales\\GraphQL\\Sample\\Controller' => __DIR__.'/../Controller/'
+            '\\OxidEsales\\GraphQL\\Sample\\Controller' => __DIR__ . '/../Controller/'
         ];
     }
 
     public function getTypeNamespaceMapping(): array
     {
         return [
-            '\\OxidEsales\\GraphQL\\Sample\\DataObject' => __DIR__.'/../DataObject/'
+            '\\OxidEsales\\GraphQL\\Sample\\DataObject' => __DIR__ . '/../DataObject/'
         ];
     }
 }
