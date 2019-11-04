@@ -3,12 +3,12 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Property OxidEsales\\\\GraphQL\\\\Sample\\\\Dao\\\\CategoryDao\\:\\:\\$queryBuilderFactory has unknown class OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface as its type\\.$#"
+			message: "#^Property OxidEsales\\\\GraphQL\\\\Example\\\\Dao\\\\CategoryDao\\:\\:\\$queryBuilderFactory has unknown class OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface as its type\\.$#"
 			count: 1
 			path: src/Dao/CategoryDao.php
 
 		-
-			message: "#^Parameter \\$queryBuilderFactory of method OxidEsales\\\\GraphQL\\\\Sample\\\\Dao\\\\CategoryDao\\:\\:__construct\\(\\) has invalid typehint type OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface\\.$#"
+			message: "#^Parameter \\$queryBuilderFactory of method OxidEsales\\\\GraphQL\\\\Example\\\\Dao\\\\CategoryDao\\:\\:__construct\\(\\) has invalid typehint type OxidEsales\\\\EshopCommunity\\\\Internal\\\\Framework\\\\Database\\\\QueryBuilderFactoryInterface\\.$#"
 			count: 1
 			path: src/Dao/CategoryDao.php
 

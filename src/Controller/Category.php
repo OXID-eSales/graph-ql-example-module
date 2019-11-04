@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Sample\Controller;
+namespace OxidEsales\GraphQL\Example\Controller;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
-use OxidEsales\GraphQL\Sample\Dao\CategoryDaoInterface;
-use OxidEsales\GraphQL\Sample\DataObject\Category as CategoryDataObject;
+use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 
 class Category

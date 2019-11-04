@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Sample\Dao;
+namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\GraphQL\Sample\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataObject\Category;
 
 class CategoryDao implements CategoryDaoInterface
 {

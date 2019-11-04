@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Sample\Dao;
+namespace OxidEsales\GraphQL\Example\Dao;
 
-use OxidEsales\GraphQL\Sample\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataObject\Category;
 
 interface CategoryDaoInterface
 {

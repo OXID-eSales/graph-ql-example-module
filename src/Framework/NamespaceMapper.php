@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Sample\Framework;
+namespace OxidEsales\GraphQL\Example\Framework;
 
 use OxidEsales\GraphQL\Base\Framework\NamespaceMapperInterface;
 
@@ -16,14 +16,14 @@ class NamespaceMapper implements NamespaceMapperInterface
     public function getControllerNamespaceMapping(): array
     {
         return [
-            '\\OxidEsales\\GraphQL\\Sample\\Controller' => __DIR__ . '/../Controller/'
+            '\\OxidEsales\\GraphQL\\Example\\Controller' => __DIR__ . '/../Controller/'
         ];
     }
 
     public function getTypeNamespaceMapping(): array
     {
         return [
-            '\\OxidEsales\\GraphQL\\Sample\\DataObject' => __DIR__ . '/../DataObject/'
+            '\\OxidEsales\\GraphQL\\Example\\DataObject' => __DIR__ . '/../DataObject/'
         ];
     }
 }

@@ -8,5 +8,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - depends on oxid-esales/graphql-base:dev-master (soon to be v1.0.0)
-- Namespace from \OxidEsales\GraphQL to \OxidEsales\GraphQL\Sample
+- Namespace from \OxidEsales\GraphQL to \OxidEsales\GraphQL\Example
 - PSR2 -> PSR12
