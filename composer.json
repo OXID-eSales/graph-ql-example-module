@@ -1,6 +1,6 @@
 {
   "name": "oxid-esales/graphql-example",
-  "description": "OXID GraphQL Example",
+  "description": "OXID eSales GraphQL example module",
   "type": "oxideshop-module",
   "keywords": ["oxid", "modules", "eShop", "GraphQL"],
   "homepage": "https://www.oxid-esales.com",
