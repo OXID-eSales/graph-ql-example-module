@@ -39,4 +39,30 @@ class CategoryTest extends TestCase
             static::$queryResult['status']
         );
     }
+
+    public function testCreateSimpleCategory()
+    {
+        $this->execQuery('mutation { categoryCreate(category: {name: "foobar"}) {id, name} }');
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+    }
+
+    /**
+     * @depends testCreateSimpleCategory
+     */
+    public function testGetSimpleCategoryJustCreated()
+    {
+        $this->execQuery('query { categories {id, name}}');
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'foobar',
+            static::$queryResult['body']['data']['categories'][0]['name']
+        );
+    }
+
 }

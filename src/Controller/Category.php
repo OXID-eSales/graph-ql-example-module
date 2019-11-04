@@ -14,6 +14,7 @@ use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
 use TheCodingMachine\GraphQLite\Annotations\Query;
+use TheCodingMachine\GraphQLite\Annotations\Mutation;
 
 class Category
 {
@@ -56,4 +57,16 @@ class Category
             $this->legacyService->getShopId()
         );
     }
+
+    /**
+     * @Mutation
+     */
+    public function categoryCreate(CategoryDataObject $category): CategoryDataObject
+    {
+        return $this->categoryDao->createCategory(
+            $category,
+            $this->legacyService->getShopId()
+        );
+    }
+
 }

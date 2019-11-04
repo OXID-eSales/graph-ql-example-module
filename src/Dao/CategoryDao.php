@@ -75,61 +75,38 @@ class CategoryDao implements CategoryDaoInterface
         return $categories;
     }
 
+    public function createCategory(Category $category, int $shopId): Category
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $values = [
+            'OXID'       => ':oxid',
+            'OXSHOPID'   => $shopId,
+            'OXTITLE'    => ':title',
+            'OXPARENTID' => ':parentid',
+        ];
+        $queryBuilder->setParameter('oxid', $category->getId())
+                     ->setParameter('shopid', $shopId)
+                     ->setParameter('title', $category->getName())
+                     ->setParameter('parentid', 'oxrootid');
+
+        $queryBuilder->insert('oxcategories')
+                     ->values($values)
+                     ->execute();
+
+        /*
+        $queryBuilderJoin = $this->queryBuilderFactory->create();
+        $queryBuilderJoin->insert('oxcategories2shop')
+            ->values(['OXSHOPID' => ':shopid', 'OXMAPOBJECTID' => ':mapid'])
+            ->setParameter('shopid', $shopId)
+            ->setParameter('mapid', $this->getMapId($id))
+            ->execute();
+         */
+        return $category;
+    }
+
     /*
-
-    public function getCategory(string $categoryId, string $lang, int $shopId): Category
-    {
-        $viewName = 'oxv_oxcategories_' . $shopId . '_' . $lang;
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select(['OXTITLE', 'OXID', 'OXPARENTID'])
-            ->from($viewName)
-            ->where($queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('OXID', ':oxid'),
-                        $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
-                )
-            )
-            ->setParameter('oxid', $categoryId)
-            ->setParameter('shopid', $shopId);
-        $result = $queryBuilder->execute();
-        $row = $result->fetch();
-        if (! $row) {
-            throw new ObjectNotFoundException("Category with id \"$categoryId\" not found.");
-        }
-        else {
-            return $this->rowToCategory($row);
-        }
-    }
-
-    public function getCategories(string $lang, int $shopId, $parentid=null)
-    {
-        $viewName = 'oxv_oxcategories_' . $shopId . '_' . $lang;
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select(['OXTITLE', 'OXID', 'OXPARENTID'])
-            ->from($viewName)
-            ->where($queryBuilder->expr()->andX(
-                        $queryBuilder->expr()->eq('OXPARENTID', ':oxparentid'),
-                        $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
-                    )
-                )
-            ->setParameter('shopid', $shopId);
-        if ($parentid === null) {
-            $queryBuilder->setParameter('oxparentid', 'oxrootid');
-        }
-        else {
-            $queryBuilder->setParameter('oxparentid', $parentid);
-        }
-        $result = $queryBuilder->execute();
-        $categoryList = [];
-        foreach($result as $row) {
-            $categoryList[] = $this->rowToCategory($row);
-        }
-        return $categoryList;
-
-    }
-
     public function addCategory(array $names, int $shopId, string $parentId = null): string
     {
-
         $queryBuilder = $this->queryBuilderFactory->create();
         $values = ['OXSHOPID' => $shopId, 'OXTITLE' => ':title'];
         $queryBuilder->setParameter('title', $names[0]);
