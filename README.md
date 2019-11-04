@@ -8,6 +8,8 @@ This module provides a basic example on how to extend the [oxid-esales/graphql-b
 
 This assumes you have the OXID eShop up and running and installed and activated the `oxid-esales/graphql-base` module.
 
+**DO NOT USE IN PRODUCTION, THIS MODULE IS FOR DEMO PURPOSES ONLY**
+
 ### Install
 
 ```bash
