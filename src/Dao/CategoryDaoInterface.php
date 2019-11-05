@@ -13,10 +13,12 @@ use OxidEsales\GraphQL\Example\DataObject\Category;
 
 interface CategoryDaoInterface
 {
-    public function getCategoryById(string $id, int $shopId): Category;
+    public function getCategoryById(string $id, int $shopId): ?Category;
 
     /**
      * @return Category[]
      */
     public function getCategoriesByParentId(string $parentid, int $shopId): array;
+
+    public function createCategory(Category $category, int $shopId): Category;
 }

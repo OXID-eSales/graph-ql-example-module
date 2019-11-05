@@ -42,10 +42,26 @@ class CategoryTest extends TestCase
 
     public function testCreateSimpleCategory()
     {
-        $this->execQuery('mutation { categoryCreate(category: {name: "foobar"}) {id, name} }');
+        $this->execQuery('mutation { categoryCreate(category: {id: "10", name: "foobar"}) {id, name} }');
         $this->assertEquals(
             200,
             static::$queryResult['status']
+        );
+    }
+
+    /**
+     * @depends testCreateSimpleCategory
+     */
+    public function testGetSimpleCategoryJustCreatedById()
+    {
+        $this->execQuery('query { category (id: "10") {id, name}}');
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'foobar',
+            static::$queryResult['body']['data']['category']['name']
         );
     }
 
@@ -65,4 +81,26 @@ class CategoryTest extends TestCase
         );
     }
 
+    /**
+     * @depends testCreateSimpleCategory
+     */
+    public function testGetSimpleCategoryJustCreatedWithExtras()
+    {
+        $this->execQuery('query { categories {id, name, childs { id }, parent { id }}}');
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'foobar',
+            static::$queryResult['body']['data']['categories'][0]['name']
+        );
+        $this->assertEquals(
+            [],
+            static::$queryResult['body']['data']['categories'][0]['childs']
+        );
+        $this->assertNull(
+            static::$queryResult['body']['data']['categories'][0]['parent']
+        );
+    }
 }

@@ -42,9 +42,8 @@ class Category
     /**
      * @Factory
      */
-    public static function createCategory(string $name, ?string $parentid = null): self
+    public static function createCategory(string $id, string $name, ?string $parentid = null): self
     {
-        $id = "10";
         $parentid = 'oxrootid';
         return new self(
             $id,
