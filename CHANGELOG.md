@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Category queries, mutation, type and data access object
+
 ### Changed
 - depends on oxid-esales/graphql-base:dev-master (soon to be v1.0.0)
 - Namespace from \OxidEsales\GraphQL to \OxidEsales\GraphQL\Example
