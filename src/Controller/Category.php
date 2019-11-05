@@ -35,7 +35,7 @@ class Category
     /**
      * @Query
      */
-    public function category(string $id): CategoryDataObject
+    public function category(string $id): ?CategoryDataObject
     {
         return $this->categoryDao->getCategoryById(
             $id,

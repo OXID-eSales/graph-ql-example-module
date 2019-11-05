@@ -26,8 +26,11 @@ class CategoryTest extends TestCase
     {
         $this->execQuery('query { category (id: "does-not-exist"){id, name}}');
         $this->assertEquals(
-            400,
+            200,
             static::$queryResult['status']
+        );
+        $this->assertNull(
+            static::$queryResult['body']['data']['category']
         );
     }
 
