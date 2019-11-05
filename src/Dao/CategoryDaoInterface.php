@@ -1,19 +1,24 @@
 <?php
+
 /**
- * Created by PhpStorm.
- * User: michael
- * Date: 18.03.19
- * Time: 12:45
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
  */
 
-namespace OxidEsales\GraphQl\Sample\Dao;
+declare(strict_types=1);
+
+namespace OxidEsales\GraphQL\Example\Dao;
+
+use OxidEsales\GraphQL\Example\DataObject\Category;
 
 interface CategoryDaoInterface
 {
-    public function getCategory(string $categoryId, string $lang, int $shopId);
+    public function getCategoryById(string $id, int $shopId): ?Category;
 
-    public function getCategories(string $lang, int $shopId, $parentid = null);
+    /**
+     * @return Category[]
+     */
+    public function getCategoriesByParentId(string $parentid, int $shopId): array;
 
-    public function addCategory(array $names, int $shopId, string $parentId = null);
-
+    public function createCategory(Category $category, int $shopId): Category;
 }

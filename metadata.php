@@ -20,7 +20,6 @@ $aModule = [
     ],
     'description'   =>  [
         'de' => '<span>OXID GraphQL API Framework</span>',
-
         'en' => '<span>OXID GraphQL API Framework</span>',
     ],
     'thumbnail'   => 'out/pictures/logo.png',
@@ -38,8 +37,4 @@ $aModule = [
     ],
     'settings'    => [
     ],
-    'events'      => [
-        'onActivate'   => 'OxidEsales\\GraphQl\\Framework\\ModuleSetup::onActivate',
-        'onDeactivate' => 'OxidEsales\\GraphQl\\Framework\\ModuleSetup::onDeactivate'
-    ]
 ];
