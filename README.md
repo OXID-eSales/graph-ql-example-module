@@ -1,6 +1,6 @@
 # oxid-esales/graphql-example
 
-[![Build Status](https://img.shields.io/travis/com/OXID-eSales/graphql-example-module.svg?style=for-the-badge&logo=travis)](https://travis-ci.com/OXID-eSales/graphql-example-module) [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/graphql-example.svg?style=for-the-badge)](https://github.com/oxid-esales/graphql-example-module) [![Stable Version](https://img.shields.io/packagist/v/oxid-esales/graphql-example.svg?style=for-the-badge&label=latest)](https://packagist.org/packages/oxid-esales/graphql-example-module)
+[![Build Status](https://img.shields.io/travis/com/OXID-eSales/graphql-example-module.svg?style=for-the-badge&logo=travis)](https://travis-ci.com/OXID-eSales/graphql-example-module) [![PHP Version](https://img.shields.io/packagist/php-v/oxid-esales/graphql-example.svg?style=for-the-badge)](https://github.com/oxid-esales/graphql-example-module) [![Stable Version](https://img.shields.io/packagist/v/oxid-esales/graphql-example.svg?style=for-the-badge&label=latest)](https://packagist.org/packages/oxid-esales/graphql-example)
 
 This module provides a basic example on how to extend the [oxid-esales/graphql-base](https://github.com/OXID-eSales/graphql-base-module) module.
 
