@@ -13,8 +13,10 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
-use TheCodingMachine\GraphQLite\Annotations\Query;
+use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
+use TheCodingMachine\GraphQLite\Annotations\Query;
+use TheCodingMachine\GraphQLite\Annotations\Right;
 
 class Category
 {
@@ -60,6 +62,7 @@ class Category
 
     /**
      * @Mutation
+     * @Logged
      */
     public function categoryCreate(CategoryDataObject $category): CategoryDataObject
     {
