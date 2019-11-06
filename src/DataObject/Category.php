@@ -82,9 +82,9 @@ class Category
 
     /**
      * @Field()
-     * @return null|Category[]
+     * @return Category[]
      */
-    public function getChilds(): ?array
+    public function getChilds(): array
     {
         // TODO circular reference
         return ContainerFactory::getInstance()
