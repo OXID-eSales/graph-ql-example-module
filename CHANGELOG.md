@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Category queries, mutation, type and data access object
+- @Logged and @Right annotations and updated tests
 
 ### Changed
 - depends on oxid-esales/graphql-base:dev-master (soon to be v1.0.0)
