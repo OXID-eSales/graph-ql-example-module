@@ -15,3 +15,7 @@ services:
   OxidEsales\GraphQL\Example\Framework\NamespaceMapper:
     class: OxidEsales\GraphQL\Example\Framework\NamespaceMapper
     tags: ['graphql_namespace_mapper']
+
+  OxidEsales\GraphQL\Example\Service\PermissionProvider:
+    class: OxidEsales\GraphQL\Example\Service\PermissionProvider
+    tags: ['graphql_permission_provider']

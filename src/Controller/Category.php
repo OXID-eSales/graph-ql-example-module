@@ -63,6 +63,7 @@ class Category
     /**
      * @Mutation
      * @Logged
+     * @Right("CATEGORY_CREATE")
      */
     public function categoryCreate(CategoryDataObject $category): CategoryDataObject
     {
