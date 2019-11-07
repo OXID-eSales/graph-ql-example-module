@@ -36,6 +36,9 @@ class CategoryDao implements CategoryDaoInterface
                      ->setParameter('oxid', $id)
                      ->setParameter('shopid', $shopId);
         $result = $queryBuilder->execute();
+        if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {
+            return null;
+        }
         $row = $result->fetch();
         if (!$row) {
             return null;
@@ -64,6 +67,10 @@ class CategoryDao implements CategoryDaoInterface
                      ->setParameter('oxparentid', $parentid)
                      ->setParameter('shopid', $shopId);
         $result = $queryBuilder->execute();
+
+        if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {
+            return $categories;
+        }
 
         foreach ($result as $row) {
             $categories[] = new Category(

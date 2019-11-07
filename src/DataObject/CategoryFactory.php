@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\GraphQL\Example\DataObject\Category;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
@@ -24,7 +24,9 @@ class CategoryFactory
         ?string $parentid = null
     ): Category {
         if ($id === null) {
-            $id = Registry::getUtilsObject()->generateUID();
+            /** @var \OxidEsales\EshopCommunity\Core\UtilsObject */
+            $utils = Registry::getUtilsObject();
+            $id = $utils->generateUID();
         }
         if ($parentid === null) {
             $parentid = 'oxrootid';
