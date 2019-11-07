@@ -6,9 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+## [1.0.1] 2019-11-07
+
 ### Changed
 - return type of `DataObject/Category::getChilds` not null
 - license in readme file was wrongly stated as MIT
+- version number in `metadata.php`
 
 ## [1.0.0] 2019-11-06
 
