@@ -35,6 +35,8 @@ class Category
     }
 
     /**
+     * category by ID
+     *
      * @Query
      */
     public function category(string $id): ?CategoryDataObject
@@ -46,21 +48,25 @@ class Category
     }
 
     /**
+     * category list by parent ID
+     *
      * @Query
      * @return CategoryDataObject[]
      */
-    public function categories(string $id = null): array
+    public function categories(string $parentid = null): array
     {
-        if ($id === null) {
-            $id = 'oxrootid';
+        if ($parentid === null) {
+            $parentid = 'oxrootid';
         }
         return $this->categoryDao->getCategoriesByParentId(
-            $id,
+            $parentid,
             $this->legacyService->getShopId()
         );
     }
 
     /**
+     * create a category
+     *
      * @Mutation
      * @Logged
      * @Right("CATEGORY_CREATE")

@@ -39,6 +39,8 @@ class Category
     }
 
     /**
+     * unique ID
+     *
      * @Field(outputType="ID")
      */
     public function getId(): string
@@ -55,6 +57,8 @@ class Category
     }
 
     /**
+     * parent category
+     *
      * @Field()
      */
     public function getParent(): ?self
@@ -67,6 +71,8 @@ class Category
     }
 
     /**
+     * all child categories
+     *
      * @Field()
      * @return Category[]
      */

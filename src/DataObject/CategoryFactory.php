@@ -18,8 +18,11 @@ class CategoryFactory
     /**
      * @Factory
      */
-    public static function createCategory(?string $id = null, string $name, ?string $parentid = null): Category
-    {
+    public static function createCategory(
+        ?string $id = null,
+        string $name,
+        ?string $parentid = null
+    ): Category {
         if ($id === null) {
             $id = Registry::getUtilsObject()->generateUID();
         }

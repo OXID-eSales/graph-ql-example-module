@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+- GraphQL description to queries and fields
+
 ### Changed
 - move category factory to it's own class
 - allow for serverside id generation
