@@ -37,7 +37,7 @@ class Category
     /**
      * category by ID
      *
-     * @Query
+     * @Query()
      */
     public function category(string $id): ?CategoryDataObject
     {
@@ -50,7 +50,7 @@ class Category
     /**
      * category list by parent ID
      *
-     * @Query
+     * @Query()
      * @return CategoryDataObject[]
      */
     public function categories(string $parentid = null): array
@@ -67,8 +67,8 @@ class Category
     /**
      * create a category
      *
-     * @Mutation
-     * @Logged
+     * @Mutation()
+     * @Logged()
      * @Right("CATEGORY_CREATE")
      */
     public function categoryCreate(CategoryDataObject $category): CategoryDataObject

@@ -16,7 +16,7 @@ use TheCodingMachine\GraphQLite\Annotations\Factory;
 class CategoryFactory
 {
     /**
-     * @Factory
+     * @Factory()
      */
     public static function createCategory(
         ?string $id = null,
