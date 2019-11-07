@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Changed
+- move category factory to it's own class
+- allow for serverside id generation
+
 ## [1.0.1] 2019-11-07
 
 ### Changed

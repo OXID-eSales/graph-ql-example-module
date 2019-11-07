@@ -112,4 +112,23 @@ class CategoryTest extends TestCase
             static::$queryResult['body']['data']['categories'][0]['parent']
         );
     }
+
+    public function testCreateSimpleCategoryWithAutoId()
+    {
+        $this->execQuery('query { token (username: "admin", password: "admin") }');
+        $this->setAuthToken(static::$queryResult['body']['data']['token']);
+        $this->execQuery('mutation { categoryCreate(category: {name: "foobar"}) {id, name} }');
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'foobar',
+            static::$queryResult['body']['data']['categoryCreate']['name']
+        );
+        $this->assertInternalType(
+            'string',
+            static::$queryResult['body']['data']['categoryCreate']['id']
+        );
+    }
 }
