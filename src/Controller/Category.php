@@ -27,10 +27,10 @@ class Category
     private $legacyService = null;
 
     public function __construct(
-        CategoryDaoInterface $userDao,
+        CategoryDaoInterface $categoryDao,
         LegacyServiceInterface $legacyService
     ) {
-        $this->categoryDao = $userDao;
+        $this->categoryDao = $categoryDao;
         $this->legacyService = $legacyService;
     }
 
