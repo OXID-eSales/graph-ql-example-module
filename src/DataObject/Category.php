@@ -28,6 +28,12 @@ class Category
     /** @var string */
     private $parentid;
 
+    /** @var ?self */
+    private $parent;
+
+    /** @var self[] */
+    private $children = [];
+
     public function __construct(
         string $id,
         string $name,
@@ -56,6 +62,11 @@ class Category
         return $this->name;
     }
 
+    public function addParent(self $category): void
+    {
+        $this->parent = $category;
+    }
+
     /**
      * parent category
      *
@@ -63,11 +74,19 @@ class Category
      */
     public function getParent(): ?self
     {
-        // TODO circular reference
-        return ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(CategoryDaoInterface::class)
-            ->getCategoryById($this->parentid, 1);
+        if ($this->parent === null) {
+            /** @var CategoryFactory */
+            $factory = ContainerFactory::getInstance()
+                 ->getContainer()
+                 ->get(CategoryFactory::class);
+            $factory->addParentCategory($this, $this->parentid);
+        }
+        return $this->parent;
+    }
+
+    public function addChild(self $category): void
+    {
+        $this->children[] = $category;
     }
 
     /**
@@ -78,10 +97,13 @@ class Category
      */
     public function getChilds(): array
     {
-        // TODO circular reference
-        return ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(CategoryDaoInterface::class)
-            ->getCategoriesByParentId($this->id, 1);
+        if (!count($this->children)) {
+            /** @var CategoryFactory */
+            $factory = ContainerFactory::getInstance()
+                 ->getContainer()
+                 ->get(CategoryFactory::class);
+            $factory->addChildCategories($this, $this->id);
+        }
+        return $this->children;
     }
 }
