@@ -59,12 +59,8 @@ class Category
             $parentid = 'oxrootid';
         }
         return $this->categoryDao->getCategoriesByParentId(
-<<<<<<< HEAD
-            $id,
-            $this->legacyService->getLanguageId(),
-=======
             $parentid,
->>>>>>> c7f39c4a8a645fd42c83b28333c18cdda1f90fe4
+            $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );
     }

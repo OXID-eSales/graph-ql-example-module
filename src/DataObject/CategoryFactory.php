@@ -10,33 +10,15 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\DataObject;
 
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
-use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
-use OxidEsales\GraphQL\Example\DataObject\Category;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
 class CategoryFactory
 {
-
-    /** @var CategoryDaoInterface */
-    protected $categoryDao;
-
-    /** @var LegacyServiceInterface */
-    private $legacyService = null;
-
-    public function __construct(
-        CategoryDaoInterface $categoryDao,
-        LegacyServiceInterface $legacyService
-    ) {
-        $this->categoryDao = $categoryDao;
-        $this->legacyService = $legacyService;
-    }
-
     /**
      * @Factory()
      */
     public static function createCategory(
-        ?string $id = null,
+        ?string $id,
         string $name,
         ?string $parentid = null
     ): Category {
@@ -54,27 +36,5 @@ class CategoryFactory
             $parentid
         );
     }
-
-    public function addParentCategory(Category $category, string $parentid): void
-    {
-        $parentCategory = $this->categoryDao->getCategoryById(
-            $parentid,
-            $this->legacyService->getShopId()
-        );
-        if ($parentCategory === null) {
-            return;
-        }
-        $category->addParent($parentCategory);
-    }
-
-    public function addChildCategories(Category $category, string $parentid): void
-    {
-        $categories = $this->categoryDao->getCategoriesByParentId(
-            $parentid,
-            $this->legacyService->getShopId()
-        );
-        foreach ($categories as $category) {
-            $category->addChild($category);
-        }
-    }
 }
+
