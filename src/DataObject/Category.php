@@ -68,28 +68,8 @@ class Category
         return $this->name;
     }
 
-    /**
-     * @Field()
-     */
-    public function getParent(): ?self
+    public function getParentid(): string
     {
-        // TODO circular reference
-        return ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(CategoryDaoInterface::class)
-            ->getCategoryById($this->parentid, 1);
-    }
-
-    /**
-     * @Field()
-     * @return null|Category[]
-     */
-    public function getChilds(): ?array
-    {
-        // TODO circular reference
-        return ContainerFactory::getInstance()
-            ->getContainer()
-            ->get(CategoryDaoInterface::class)
-            ->getCategoriesByParentId($this->id, 1);
+        return $this->parentid;
     }
 }

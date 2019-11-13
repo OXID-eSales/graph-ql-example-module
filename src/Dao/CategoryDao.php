@@ -24,10 +24,12 @@ class CategoryDao implements CategoryDaoInterface
         $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
-    public function getCategoryById(string $id, int $shopId): ?Category
+    public function getCategoryById(string $id, int $languageId, int $shopId): ?Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID'])
+        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
+
+        $queryBuilder->select(['OXID', $title, 'OXPARENTID'])
                      ->from('oxcategories')
                      ->where($queryBuilder->expr()->andX(
                          $queryBuilder->expr()->eq('OXID', ':oxid'),
@@ -42,7 +44,7 @@ class CategoryDao implements CategoryDaoInterface
         }
         $category = new Category(
             $row['OXID'],
-            $row['OXTITLE'],
+            $row[$title],
             $row['OXPARENTID']
         );
         return $category;
@@ -51,11 +53,12 @@ class CategoryDao implements CategoryDaoInterface
     /**
      * @return Category[]
      */
-    public function getCategoriesByParentId(string $parentid, int $shopId): array
+    public function getCategoriesByParentId(string $parentid, int $languageId, int $shopId): array
     {
         $categories = [];
         $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID'])
+        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
+        $queryBuilder->select(['OXID', $title, 'OXPARENTID'])
                      ->from('oxcategories')
                      ->where($queryBuilder->expr()->andX(
                          $queryBuilder->expr()->eq('OXPARENTID', ':oxparentid'),
@@ -68,20 +71,21 @@ class CategoryDao implements CategoryDaoInterface
         foreach ($result as $row) {
             $categories[] = new Category(
                 $row['OXID'],
-                $row['OXTITLE'],
+                $row[$title],
                 $row['OXPARENTID']
             );
         }
         return $categories;
     }
 
-    public function createCategory(Category $category, int $shopId): Category
+    public function createCategory(Category $category, int $languageId, int $shopId): Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
+        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
         $values = [
             'OXID'       => ':oxid',
             'OXSHOPID'   => $shopId,
-            'OXTITLE'    => ':title',
+            $title       => ':title',
             'OXPARENTID' => ':parentid',
         ];
         $queryBuilder->setParameter('oxid', $category->getId())

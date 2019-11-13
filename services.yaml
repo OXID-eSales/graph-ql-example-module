@@ -8,6 +8,10 @@ services:
     class: OxidEsales\GraphQL\Example\Dao\CategoryDao
     public: true
 
+  OxidEsales\GraphQL\Example\DataObject\CategoryExtensionsService:
+      class: OxidEsales\GraphQL\Example\DataObject\CategoryExtensionsService
+      public: true
+
   OxidEsales\GraphQL\Example\Controller\:
     resource: 'src/Controller/*'
     public: true

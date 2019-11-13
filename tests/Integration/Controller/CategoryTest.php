@@ -95,7 +95,7 @@ class CategoryTest extends TestCase
      */
     public function testGetSimpleCategoryJustCreatedWithExtras()
     {
-        $this->execQuery('query { categories {id, name, childs { id }, parent { id }}}');
+        $this->execQuery('query { categories {id, name, children { id }, parent { id }}}');
         $this->assertEquals(
             200,
             static::$queryResult['status']
@@ -106,7 +106,7 @@ class CategoryTest extends TestCase
         );
         $this->assertEquals(
             [],
-            static::$queryResult['body']['data']['categories'][0]['childs']
+            static::$queryResult['body']['data']['categories'][0]['children']
         );
         $this->assertNull(
             static::$queryResult['body']['data']['categories'][0]['parent']

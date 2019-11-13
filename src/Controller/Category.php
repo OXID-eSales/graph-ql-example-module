@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Controller;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
@@ -41,6 +40,7 @@ class Category
     {
         return $this->categoryDao->getCategoryById(
             $id,
+            $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );
     }
@@ -56,6 +56,7 @@ class Category
         }
         return $this->categoryDao->getCategoriesByParentId(
             $id,
+            $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );
     }
@@ -69,6 +70,7 @@ class Category
     {
         return $this->categoryDao->createCategory(
             $category,
+            $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );
     }
