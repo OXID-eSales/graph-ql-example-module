@@ -26,20 +26,15 @@ activate the GraphQL Example module.
 
 Request query
 ```
-query{
-  categories{
+query {
+  categories {
     id
     name
   }
 }
 ```
 
-Request variables
-```
-{}
-```
-
-Response exmaple
+Response example
 ```
 {
     "data": {
