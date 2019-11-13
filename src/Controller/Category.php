@@ -26,15 +26,17 @@ class Category
     private $legacyService = null;
 
     public function __construct(
-        CategoryDaoInterface $userDao,
+        CategoryDaoInterface $categoryDao,
         LegacyServiceInterface $legacyService
     ) {
-        $this->categoryDao = $userDao;
+        $this->categoryDao = $categoryDao;
         $this->legacyService = $legacyService;
     }
 
     /**
-     * @Query
+     * category by ID
+     *
+     * @Query()
      */
     public function category(string $id): ?CategoryDataObject
     {
@@ -46,24 +48,32 @@ class Category
     }
 
     /**
-     * @Query
+     * category list by parent ID
+     *
+     * @Query()
      * @return CategoryDataObject[]
      */
-    public function categories(string $id = null): array
+    public function categories(string $parentid = null): array
     {
-        if ($id === null) {
-            $id = 'oxrootid';
+        if ($parentid === null) {
+            $parentid = 'oxrootid';
         }
         return $this->categoryDao->getCategoriesByParentId(
+<<<<<<< HEAD
             $id,
             $this->legacyService->getLanguageId(),
+=======
+            $parentid,
+>>>>>>> c7f39c4a8a645fd42c83b28333c18cdda1f90fe4
             $this->legacyService->getShopId()
         );
     }
 
     /**
-     * @Mutation
-     * @Logged
+     * create a category
+     *
+     * @Mutation()
+     * @Logged()
      * @Right("CATEGORY_CREATE")
      */
     public function categoryCreate(CategoryDataObject $category): CategoryDataObject

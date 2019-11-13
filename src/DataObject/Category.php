@@ -11,7 +11,6 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
-use TheCodingMachine\GraphQLite\Annotations\Factory;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
@@ -40,19 +39,8 @@ class Category
     }
 
     /**
-     * @Factory
-     */
-    public static function createCategory(string $id, string $name, ?string $parentid = null): self
-    {
-        $parentid = 'oxrootid';
-        return new self(
-            $id,
-            $name,
-            $parentid
-        );
-    }
-
-    /**
+     * unique ID
+     *
      * @Field(outputType="ID")
      */
     public function getId(): string
