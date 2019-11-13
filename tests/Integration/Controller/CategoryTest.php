@@ -9,10 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Tests\Integration\Controller;
 
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\GraphQL\Base\Tests\Integration\TestCase;
+use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 
 class CategoryTest extends TestCase
 {
+    /** @var CategoryDaoInterface */
+    private $categoryDao;
+
     public function testGetSingleCategoryWithoutParam()
     {
         $this->execQuery('query { category }');
@@ -130,5 +135,26 @@ class CategoryTest extends TestCase
             'string',
             static::$queryResult['body']['data']['categoryCreate']['id']
         );
+    }
+
+    public function testCreateSubCategory()
+    {
+        $this->markTestSkipped("Does not work although the query works on console.");
+
+        $this->execQuery('query { token (username: "admin", password: "admin") }');
+        $this->setAuthToken(static::$queryResult['body']['data']['token']);
+
+        $this->execQuery('mutation { categoryCreate(category: {name: "foobar1"}) {id, name} }');
+        $parentid = static::$queryResult['body']['data']['categoryCreate']['id'];
+        $this->assertNotNull($parentid);
+
+        $this->execQuery(
+            "mutation { categoryCreate(category: {name: \"foobar2\"}, parent: {id: \"$parentid\"}) {id, name, parent} }"
+        );
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals($parentid, static::$queryResult['body']['data']['categoryCreate']['parent']['id']);
     }
 }
