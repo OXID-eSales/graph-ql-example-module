@@ -1,10 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\GraphQL\Example\DataObject;
+
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
@@ -51,5 +55,4 @@ class CategoryExtensionsService
             $this->legacyService->getShopId()
         );
     }
-
 }

@@ -29,8 +29,7 @@ class CategoryFactory
         }
         if ($parent === null) {
             $parentid = 'oxrootid';
-        }
-        else {
+        } else {
             $parentid = $parent->getId();
         }
         if ($name == null) {
@@ -43,4 +42,3 @@ class CategoryFactory
         );
     }
 }
-
