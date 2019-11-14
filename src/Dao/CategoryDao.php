@@ -11,6 +11,8 @@ namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataObject\CategoryInput;
+use function Doctrine\DBAL\Query\QueryBuilder;
 
 class CategoryDao implements CategoryDaoInterface
 {
@@ -85,7 +87,7 @@ class CategoryDao implements CategoryDaoInterface
         return $categories;
     }
 
-    public function createCategory(Category $category, int $languageId, int $shopId): Category
+    public function createCategory(CategoryInput $category, int $languageId, int $shopId): Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
@@ -98,12 +100,34 @@ class CategoryDao implements CategoryDaoInterface
         $queryBuilder->setParameter('oxid', $category->getId())
                      ->setParameter('shopid', $shopId)
                      ->setParameter('title', $category->getName())
-                     ->setParameter('parentid', $category->getParentid());
+                     ->setParameter('parentid', $category->getParentId());
 
         $queryBuilder->insert('oxcategories')
                      ->values($values)
                      ->execute();
 
         return $category;
+    }
+
+    public function alterName(string $categoryId, string $name, int $languageId, int $shopId): Category
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
+        $values = [
+            $title       => ':title'
+        ];
+        $queryBuilder->setParameter('oxid', $categoryId)
+            ->setParameter('shopid', $shopId)
+            ->setParameter('title', $name);
+
+        $queryBuilder->update('oxcategories')
+            ->values($values)
+            ->where($queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq('OXSHOPID', 'shopid'),
+                $queryBuilder->expr()->eq('OXID', 'oxid')
+            ))
+            ->execute();
+
+        return $this->getCategoryById($categoryId, $languageId, $shopId);
     }
 }

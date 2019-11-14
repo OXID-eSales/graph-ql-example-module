@@ -139,7 +139,7 @@ class CategoryTest extends TestCase
 
     public function testCreateSubCategory()
     {
-        $this->markTestSkipped("Does not work although the query works on console.");
+        #$this->markTestSkipped("Does not work although the query works on console.");
 
         $this->execQuery('query { token (username: "admin", password: "admin") }');
         $this->setAuthToken(static::$queryResult['body']['data']['token']);
