@@ -12,33 +12,33 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 use OxidEsales\EshopCommunity\Core\Registry;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-class CategoryFactory
+class CategoryInputFactory
 {
     /**
-     * @Factory()
+     * @Factory(name="CategoryInput")
      */
-    public static function createCategory(
+    public function createCategoryInput(
         ?string $id,
         ?string $name,
-        ?Category $parent = null
-    ): Category {
+        ?string $parentId = null
+    ): CategoryInput {
         if ($id === null) {
             /** @var \OxidEsales\EshopCommunity\Core\UtilsObject */
             $utils = Registry::getUtilsObject();
             $id = $utils->generateUID();
         }
-        if ($parent === null) {
-            $parentid = 'oxrootid';
-        } else {
-            $parentid = $parent->getId();
+        if ($parentId === null) {
+            $parentId = 'oxrootid';
         }
+
         if ($name == null) {
             $name = '';
         }
-        return new Category(
+
+        return new CategoryInput(
             $id,
             $name,
-            $parentid
+            $parentId
         );
     }
 }
