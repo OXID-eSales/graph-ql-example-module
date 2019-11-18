@@ -12,7 +12,7 @@ namespace OxidEsales\GraphQL\Example\Controller;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
-use OxidEsales\GraphQL\Example\DataObject\CategoryInput;
+use OxidEsales\GraphQL\Example\DataObject\InputCategory;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -73,10 +73,10 @@ class Category
      * @Logged()
      * @Right("CATEGORY_CREATE")
      */
-    public function categoryCreate(CategoryInput $categoryInput): CategoryDataObject
+    public function categoryCreate(InputCategory $inputCategory): CategoryDataObject
     {
         return $this->categoryDao->createCategory(
-            $categoryInput,
+            $inputCategory,
             $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );

@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category;
-use OxidEsales\GraphQL\Example\DataObject\CategoryInput;
+use OxidEsales\GraphQL\Example\DataObject\InputCategory;
 use function Doctrine\DBAL\Query\QueryBuilder;
 
 class CategoryDao implements CategoryDaoInterface
@@ -87,7 +87,7 @@ class CategoryDao implements CategoryDaoInterface
         return $categories;
     }
 
-    public function createCategory(CategoryInput $category, int $languageId, int $shopId): Category
+    public function createCategory(InputCategory $category, int $languageId, int $shopId): Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";

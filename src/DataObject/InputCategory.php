@@ -6,7 +6,7 @@
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
-class CategoryInput
+class InputCategory
 {
     private $id;
     private $name;
