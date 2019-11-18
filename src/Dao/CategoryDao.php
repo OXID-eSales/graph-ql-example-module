@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category;
-use OxidEsales\GraphQL\Example\DataObject\InputCategory;
-use function Doctrine\DBAL\Query\QueryBuilder;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFoundException;
 
 class CategoryDao implements CategoryDaoInterface
 {
@@ -20,13 +20,24 @@ class CategoryDao implements CategoryDaoInterface
     /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
     private $queryBuilderFactory;
 
+    /** @var LegacyServiceInterface */
+    private $legacyService;
+
     public function __construct(
-        QueryBuilderFactoryInterface $queryBuilderFactory
+        QueryBuilderFactoryInterface $queryBuilderFactory,
+        LegacyServiceInterface $legacyService
     ) {
         $this->queryBuilderFactory = $queryBuilderFactory;
+        $this->legacyService = $legacyService;
     }
 
-    public function getCategoryById(string $id, int $languageId, int $shopId): ?Category
+    /**
+     * @param string $id
+     * @param int $languageId
+     * @return Category
+     * @throws CategoryNotFoundException
+     */
+    public function getCategoryById(string $id, int $languageId): ?Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
@@ -34,18 +45,16 @@ class CategoryDao implements CategoryDaoInterface
         $queryBuilder->select(['OXID', $title, 'OXPARENTID'])
                      ->from('oxcategories')
                      ->where($queryBuilder->expr()->andX(
-                         $queryBuilder->expr()->eq('OXID', ':oxid'),
-                         $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
+                         $queryBuilder->expr()->eq('OXID', ':oxid')
                      ))
-                     ->setParameter('oxid', $id)
-                     ->setParameter('shopid', $shopId);
+                     ->setParameter('oxid', $id);
         $result = $queryBuilder->execute();
         if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {
-            return null;
+            throw new CategoryNotFoundException("Error executing category query.");
         }
         $row = $result->fetch();
         if (!$row) {
-            return null;
+            throw new CategoryNotFoundException("There is no category with id '$id'.");
         }
         $category = new Category(
             $row['OXID'],
@@ -56,7 +65,11 @@ class CategoryDao implements CategoryDaoInterface
     }
 
     /**
-     * @return Category[]
+     * @param string $parentid
+     * @param int $languageId
+     * @param int $shopId
+     * @return array
+     * @throws CategoryNotFoundException
      */
     public function getCategoriesByParentId(string $parentid, int $languageId, int $shopId): array
     {
@@ -74,7 +87,7 @@ class CategoryDao implements CategoryDaoInterface
         $result = $queryBuilder->execute();
 
         if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {
-            return $categories;
+            throw new CategoryNotFoundException('Error accessing database.');
         }
 
         foreach ($result as $row) {
@@ -87,8 +100,17 @@ class CategoryDao implements CategoryDaoInterface
         return $categories;
     }
 
-    public function createCategory(InputCategory $category, int $languageId, int $shopId): Category
+    public function saveCategory(Category $category, int $languageId, int $shopId): Category
     {
+        if ($category->getId() === null) {
+            return $this->insertCategory($category, $languageId, $shopId);
+        } else {
+            return $this->updateCategory($category, $languageId, $shopId);
+        }
+    }
+
+    private function insertCategory(Category $category, int $languageId, int $shopId): Category {
+
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
         $values = [
@@ -97,7 +119,8 @@ class CategoryDao implements CategoryDaoInterface
             $title       => ':title',
             'OXPARENTID' => ':parentid',
         ];
-        $queryBuilder->setParameter('oxid', $category->getId())
+        $categoryId = $this->legacyService->createUniqueIdentifier();
+        $queryBuilder->setParameter('oxid', $categoryId)
                      ->setParameter('shopid', $shopId)
                      ->setParameter('title', $category->getName())
                      ->setParameter('parentid', $category->getParentId());
@@ -106,28 +129,26 @@ class CategoryDao implements CategoryDaoInterface
                      ->values($values)
                      ->execute();
 
-        return $category;
+        return $this->getCategoryById($categoryId, $languageId);
     }
 
-    public function alterName(string $categoryId, string $name, int $languageId, int $shopId): Category
+    private function updateCategory(Category $category, int $languageId, int $shopId): Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
-        $values = [
-            $title       => ':title'
-        ];
-        $queryBuilder->setParameter('oxid', $categoryId)
-            ->setParameter('shopid', $shopId)
-            ->setParameter('title', $name);
 
         $queryBuilder->update('oxcategories')
-            ->values($values)
+            ->set($title, ':title')
+            ->set('OXPARENTID', ':parentid')
             ->where($queryBuilder->expr()->andX(
-                $queryBuilder->expr()->eq('OXSHOPID', 'shopid'),
-                $queryBuilder->expr()->eq('OXID', 'oxid')
-            ))
+                $queryBuilder->expr()->eq('OXSHOPID', ':shopid'),
+                $queryBuilder->expr()->eq('OXID', ':oxid')
+            ))->setParameter('oxid', $category->getId())
+            ->setParameter('shopid', $shopId)
+            ->setParameter('parentid', $category->getParentid())
+            ->setParameter('title', $category->getName())
             ->execute();
 
-        return $this->getCategoryById($categoryId, $languageId, $shopId);
+        return $this->getCategoryById($category->getId(), $languageId);
     }
 }

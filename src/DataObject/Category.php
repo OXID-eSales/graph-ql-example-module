@@ -29,7 +29,7 @@ class Category
     private $parentid;
 
     public function __construct(
-        string $id,
+        ?string $id,
         string $name,
         string $parentid
     ) {
@@ -43,7 +43,7 @@ class Category
      *
      * @Field(outputType="ID")
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }

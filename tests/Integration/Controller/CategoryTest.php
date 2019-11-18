@@ -9,14 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Tests\Integration\Controller;
 
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\GraphQL\Base\Tests\Integration\TestCase;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 
 class CategoryTest extends TestCase
 {
-    /** @var CategoryDaoInterface */
-    private $categoryDao;
 
     public function testGetSingleCategoryWithoutParam()
     {
@@ -31,8 +28,12 @@ class CategoryTest extends TestCase
     {
         $this->execQuery('query { category (id: "does-not-exist"){id, name}}');
         $this->assertEquals(
-            200,
+            400,
             static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'There is no category with id \'does-not-exist\'.',
+            static::$queryResult['body']['errors'][0]['debugMessage']
         );
         $this->assertNull(
             static::$queryResult['body']['data']['category']
@@ -46,115 +47,89 @@ class CategoryTest extends TestCase
             200,
             static::$queryResult['status']
         );
+        $this->assertEquals(7, sizeof(static::$queryResult['body']['data']['categories']));
     }
 
-    public function testCreateSimpleCategory()
+    public function testCreateAndUpdateSimpleCategory()
     {
+        // Login
         $this->execQuery('query { token (username: "admin", password: "admin") }');
         $this->setAuthToken(static::$queryResult['body']['data']['token']);
-        $this->execQuery('mutation { categoryCreate(category: {id: "10", name: "foobar"}) {id, name} }');
-        $this->assertEquals(
-            200,
-            static::$queryResult['status']
-        );
-        $this->assertEquals(
-            'foobar',
-            static::$queryResult['body']['data']['categoryCreate']['name']
-        );
-    }
 
-    /**
-     * @depends testCreateSimpleCategory
-     */
-    public function testGetSimpleCategoryJustCreatedById()
-    {
-        $this->execQuery('query { category (id: "10") {id, name}}');
+        // Determine no of root categories
+        $this->execQuery('query {categories {id}}');
+        $noOfCategories = sizeof(static::$queryResult['body']['data']['categories']);
+
+        // Create category
+        $this->execQuery('mutation { categoryCreateOrUpdate(category: {name: "foobar"}) {id, name} }');
         $this->assertEquals(
             200,
             static::$queryResult['status']
         );
         $this->assertEquals(
             'foobar',
+            static::$queryResult['body']['data']['categoryCreateOrUpdate']['name']
+        );
+        // Get id for newly created category
+        $id = static::$queryResult['body']['data']['categoryCreateOrUpdate']['id'];
+
+        // Verify that there is one more root category
+        $this->execQuery('query {categories {id}}');
+        $this->assertEquals($noOfCategories + 1, sizeof(static::$queryResult['body']['data']['categories']));
+
+        // Update category
+        $this->execQuery('mutation { categoryCreateOrUpdate(category: {name: "barfoo", id: "' .
+            $id . '"}) {id, name} }');
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'barfoo',
+            static::$queryResult['body']['data']['categoryCreateOrUpdate']['name']
+        );
+        $this->assertEquals($id, static::$queryResult['body']['data']['categoryCreateOrUpdate']['id']);
+
+        // Verify that there are exactly the same number of root categories
+        $this->execQuery('query {categories {id}}');
+        $this->assertEquals($noOfCategories + 1, sizeof(static::$queryResult['body']['data']['categories']));
+
+        // Fetch the new category
+        $this->execQuery("query { category (id: \"$id\") {id, name, children { id }, parent { id }}}");
+        $this->assertEquals(
+            200,
+            static::$queryResult['status']
+        );
+        $this->assertEquals(
+            'barfoo',
             static::$queryResult['body']['data']['category']['name']
-        );
-    }
-
-    /**
-     * @depends testCreateSimpleCategory
-     */
-    public function testGetSimpleCategoryJustCreated()
-    {
-        $this->execQuery('query { categories {id, name}}');
-        $this->assertEquals(
-            200,
-            static::$queryResult['status']
-        );
-        $this->assertEquals(
-            'foobar',
-            static::$queryResult['body']['data']['categories'][0]['name']
-        );
-    }
-
-    /**
-     * @depends testCreateSimpleCategory
-     */
-    public function testGetSimpleCategoryJustCreatedWithExtras()
-    {
-        $this->execQuery('query { categories {id, name, children { id }, parent { id }}}');
-        $this->assertEquals(
-            200,
-            static::$queryResult['status']
-        );
-        $this->assertEquals(
-            'foobar',
-            static::$queryResult['body']['data']['categories'][0]['name']
         );
         $this->assertEquals(
             [],
-            static::$queryResult['body']['data']['categories'][0]['children']
+            static::$queryResult['body']['data']['category']['children']
         );
         $this->assertNull(
-            static::$queryResult['body']['data']['categories'][0]['parent']
+            static::$queryResult['body']['data']['category']['parent']
         );
     }
 
-    public function testCreateSimpleCategoryWithAutoId()
-    {
-        $this->execQuery('query { token (username: "admin", password: "admin") }');
-        $this->setAuthToken(static::$queryResult['body']['data']['token']);
-        $this->execQuery('mutation { categoryCreate(category: {name: "foobar"}) {id, name} }');
-        $this->assertEquals(
-            200,
-            static::$queryResult['status']
-        );
-        $this->assertEquals(
-            'foobar',
-            static::$queryResult['body']['data']['categoryCreate']['name']
-        );
-        $this->assertInternalType(
-            'string',
-            static::$queryResult['body']['data']['categoryCreate']['id']
-        );
-    }
 
     public function testCreateSubCategory()
     {
-        #$this->markTestSkipped("Does not work although the query works on console.");
-
         $this->execQuery('query { token (username: "admin", password: "admin") }');
         $this->setAuthToken(static::$queryResult['body']['data']['token']);
 
-        $this->execQuery('mutation { categoryCreate(category: {name: "foobar1"}) {id, name} }');
-        $parentid = static::$queryResult['body']['data']['categoryCreate']['id'];
+        $this->execQuery('mutation { categoryCreateOrUpdate(category: {name: "foobar1"}) {id, name} }');
+        $parentid = static::$queryResult['body']['data']['categoryCreateOrUpdate']['id'];
         $this->assertNotNull($parentid);
 
         $this->execQuery(
-            "mutation { categoryCreate(category: {name: \"foobar2\"}, parent: {id: \"$parentid\"}) {id, name, parent} }"
+            "mutation { categoryCreateOrUpdate(category: {name: \"foobar2\", parentid: \"$parentid\"}) {id, name, parent{id}} }"
         );
         $this->assertEquals(
             200,
             static::$queryResult['status']
         );
-        $this->assertEquals($parentid, static::$queryResult['body']['data']['categoryCreate']['parent']['id']);
+        $this->assertEquals($parentid, static::$queryResult['body']['data']['categoryCreateOrUpdate']['parent']['id']);
     }
 }

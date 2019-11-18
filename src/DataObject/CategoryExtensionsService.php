@@ -32,6 +32,9 @@ class CategoryExtensionsService
      */
     public function getParent(Category $child): ?Category
     {
+        if ($child->getParentid() == 'oxrootid') {
+            return null;
+        }
         return $this->categoryDao->getCategoryById(
             $child->getParentid(),
             $this->legacyService->getLanguageId(),

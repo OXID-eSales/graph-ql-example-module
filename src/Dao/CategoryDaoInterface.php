@@ -10,19 +10,16 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\GraphQL\Example\DataObject\Category;
-use OxidEsales\GraphQL\Example\DataObject\InputCategory;
 
 interface CategoryDaoInterface
 {
-    public function getCategoryById(string $id, int $languageId, int $shopId): ?Category;
+    public function getCategoryById(string $id, int $languageId): ?Category;
 
     /**
      * @return Category[]
      */
     public function getCategoriesByParentId(string $parentid, int $languageId, int $shopId): array;
 
-    public function createCategory(InputCategory $category, int $languageId, int $shopId): Category;
-
-    public function alterName(string $categoryId, string $name, int $languageId, int $shopId): Category;
+    public function saveCategory(Category $category, int $languageId, int $shopId): Category;
 
 }
