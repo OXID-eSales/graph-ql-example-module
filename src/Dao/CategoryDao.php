@@ -109,8 +109,8 @@ class CategoryDao implements CategoryDaoInterface
         }
     }
 
-    private function insertCategory(Category $category, int $languageId, int $shopId): Category {
-
+    private function insertCategory(Category $category, int $languageId, int $shopId): Category
+    {
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
         $values = [

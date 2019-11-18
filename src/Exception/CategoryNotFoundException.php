@@ -9,5 +9,4 @@ namespace OxidEsales\GraphQL\Example\Exception;
 
 class CategoryNotFoundException extends \Exception
 {
-
 }

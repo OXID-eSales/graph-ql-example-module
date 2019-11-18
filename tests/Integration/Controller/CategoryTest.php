@@ -124,7 +124,8 @@ class CategoryTest extends TestCase
         $this->assertNotNull($parentid);
 
         $this->execQuery(
-            "mutation { categoryCreateOrUpdate(category: {name: \"foobar2\", parentid: \"$parentid\"}) {id, name, parent{id}} }"
+            "mutation { categoryCreateOrUpdate(category: " .
+            "{name: \"foobar2\", parentid: \"$parentid\"}) {id, name, parent{id}} }"
         );
         $this->assertEquals(
             200,
