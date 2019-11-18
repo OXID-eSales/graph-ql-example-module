@@ -12,7 +12,6 @@ namespace OxidEsales\GraphQL\Example\Controller;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
-use OxidEsales\GraphQL\Example\DataObject\CategoryInput;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -67,7 +66,7 @@ class Category
     }
 
     /**
-     * create a category
+     * create or update a category
      *
      * @Mutation()
      * @Logged()
@@ -81,22 +80,4 @@ class Category
             $this->legacyService->getShopId()
         );
     }
-
-    /**
-     * create a category
-     *
-     * @Mutation()
-     * @Logged()
-     * @Right("CATEGORY_CREATE")
-     */
-    public function alterName(string $id, string $name): CategoryDataObject
-    {
-        return $this->categoryDao->alterName(
-            $id,
-            $name,
-            $this->legacyService->getLanguageId(),
-            $this->legacyService->getShopId()
-        );
-    }
-
 }
