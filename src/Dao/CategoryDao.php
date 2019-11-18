@@ -151,4 +151,26 @@ class CategoryDao implements CategoryDaoInterface
 
         return $this->getCategoryById($category->getId(), $languageId);
     }
+
+    public function alterName(string $categoryId, string $name, int $languageId, int $shopId): Category
+    {
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
+        $values = [
+            $title       => ':title'
+        ];
+        $queryBuilder->setParameter('oxid', $categoryId)
+            ->setParameter('shopid', $shopId)
+            ->setParameter('title', $name);
+
+        $queryBuilder->update('oxcategories')
+            ->values($values)
+            ->where($queryBuilder->expr()->andX(
+                $queryBuilder->expr()->eq('OXSHOPID', 'shopid'),
+                $queryBuilder->expr()->eq('OXID', 'oxid')
+            ))
+            ->execute();
+
+        return $this->getCategoryById($categoryId, $languageId, $shopId);
+    }
 }

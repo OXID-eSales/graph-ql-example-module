@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 

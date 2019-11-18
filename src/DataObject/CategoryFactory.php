@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
-use OxidEsales\EshopCommunity\Core\Registry;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
 class CategoryFactory
@@ -34,7 +33,7 @@ class CategoryFactory
         return new Category(
             $id,
             $name,
-            $parentid
+            $parentId
         );
     }
 }
