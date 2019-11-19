@@ -32,9 +32,6 @@ class CategoryDao implements CategoryDaoInterface
     }
 
     /**
-     * @param string $id
-     * @param int $languageId
-     * @return Category
      * @throws CategoryNotFoundException
      */
     public function getCategoryById(string $id, int $languageId): ?Category
@@ -65,10 +62,7 @@ class CategoryDao implements CategoryDaoInterface
     }
 
     /**
-     * @param string $parentid
-     * @param int $languageId
-     * @param int $shopId
-     * @return array
+     * @return Category[]
      * @throws CategoryNotFoundException
      */
     public function getCategoriesByParentId(string $parentid, int $languageId, int $shopId): array
