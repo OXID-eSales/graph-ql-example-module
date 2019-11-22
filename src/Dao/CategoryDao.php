@@ -29,7 +29,7 @@ class CategoryDao implements CategoryDaoInterface
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
 
-        $queryBuilder->select(['OXID', $title, 'OXPARENTID'])
+        $queryBuilder->select(['OXID', $title, 'OXPARENTID', 'OXTIMESTAMP'])
                      ->from('oxcategories')
                      ->where($queryBuilder->expr()->andX(
                          $queryBuilder->expr()->eq('OXID', ':oxid'),
@@ -48,7 +48,8 @@ class CategoryDao implements CategoryDaoInterface
         $category = new Category(
             $row['OXID'],
             $row[$title],
-            $row['OXPARENTID']
+            $row['OXPARENTID'],
+            $row['OXTIMESTAMP']
         );
         return $category;
     }
@@ -61,7 +62,7 @@ class CategoryDao implements CategoryDaoInterface
         $categories = [];
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
-        $queryBuilder->select(['OXID', $title, 'OXPARENTID'])
+        $queryBuilder->select(['OXID', $title, 'OXPARENTID', 'OXTIMESTAMP'])
                      ->from('oxcategories')
                      ->where($queryBuilder->expr()->andX(
                          $queryBuilder->expr()->eq('OXPARENTID', ':oxparentid'),
@@ -79,7 +80,8 @@ class CategoryDao implements CategoryDaoInterface
             $categories[] = new Category(
                 $row['OXID'],
                 $row[$title],
-                $row['OXPARENTID']
+                $row['OXPARENTID'],
+                $row['OXTIMESTAMP']
             );
         }
         return $categories;

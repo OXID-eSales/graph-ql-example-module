@@ -31,11 +31,13 @@ class Category
     public function __construct(
         string $id,
         string $name,
-        string $parentid
+        string $parentid,
+        string $timestamp = "now"
     ) {
         $this->id = $id;
         $this->name = $name;
         $this->parentid = $parentid;
+        $this->timestamp = new \DateTimeImmutable($timestamp);
     }
 
     /**
@@ -59,5 +61,13 @@ class Category
     public function getParentid(): string
     {
         return $this->parentid;
+    }
+
+    /**
+     * @Field()
+     */
+    public function getTimestamp(): \DateTimeImmutable
+    {
+        return $this->timestamp;
     }
 }
