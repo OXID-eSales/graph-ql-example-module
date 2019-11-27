@@ -4,10 +4,6 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface:
-    class: OxidEsales\GraphQL\Example\Dao\CategoryDao
-    public: true
-
   OxidEsales\GraphQL\Example\DataObject\CategoryExtensionsService:
       class: OxidEsales\GraphQL\Example\DataObject\CategoryExtensionsService
       public: true

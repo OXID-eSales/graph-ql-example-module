@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
@@ -35,12 +36,22 @@ class Category
         string $id,
         string $title,
         string $parentid,
-        string $timestamp = "now"
+        \DateTimeInterface $timestamp
     ) {
         $this->id = $id;
         $this->title = $title;
         $this->parentid = $parentid;
-        $this->timestamp = new DateTimeImmutable($timestamp);
+        $this->timestamp = $timestamp;
+    }
+
+    public static function createFromModel(CategoryModel $category): self
+    {
+        return new self(
+            $category->getId(),
+            (string)$category->oxcategories__oxtitle,
+            (string)$category->oxcategories__oxpartentid,
+            new \DateTimeImmutable((string)$category->oxcategories__oxtimestamp)
+        );
     }
 
     /**
