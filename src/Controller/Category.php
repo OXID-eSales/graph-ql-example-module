@@ -57,5 +57,10 @@ class Category
      */
     public function categoryCreate(CategoryDataObject $category): CategoryDataObject
     {
+        $category = $category->createModel();
+        if (!$category->save()) {
+            return 'SDF';
+        }
+        return CategoryDataObject::createFromModel($category);
     }
 }

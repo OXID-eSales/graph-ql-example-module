@@ -54,6 +54,16 @@ class Category
         );
     }
 
+    public function createModel(): CategoryModel
+    {
+        $category = oxNew(CategoryModel::class);
+        $category->assign([
+            'oxtitle' => $this->name,
+            'oxparentid' => $this->parentid
+        ]);
+        return $category;
+    }
+
     /**
      * unique ID
      *
