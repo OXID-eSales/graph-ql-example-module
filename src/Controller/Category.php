@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Controller;
 
 use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
+use OxidEsales\GraphQL\Base\Exception\NotFoundException;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
@@ -28,10 +29,9 @@ class Category
     {
         $category = oxNew(CategoryModel::class);
         if (!$category->load($id)) {
-            return null;
+            throw new NotFoundException('Category with id "' . $id . '" does not exist');
         }
-        $category = CategoryDataObject::createFromModel($category);
-        return $category;
+        return CategoryDataObject::createFromModel($category);
     }
 
     /**
