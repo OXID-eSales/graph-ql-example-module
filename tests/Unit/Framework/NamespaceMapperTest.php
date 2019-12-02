@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Tests\Unit\Framework;
 
 use PHPUnit\Framework\TestCase;
-# use OxidEsales\TestingLibrary\UnitTestCase as TestCase;
 use OxidEsales\GraphQL\Example\Framework\NamespaceMapper;
 
 class NamespaceMapperTest extends TestCase
