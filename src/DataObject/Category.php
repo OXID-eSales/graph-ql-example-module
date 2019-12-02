@@ -26,6 +26,9 @@ class Category
     /** @var string */
     private $parentid;
 
+    /** @var \DateTimeInterface */
+    private $timestamp;
+
     public function __construct(
         string $id,
         string $name,
@@ -64,7 +67,7 @@ class Category
     /**
      * @Field()
      */
-    public function getTimestamp(): \DateTimeImmutable
+    public function getTimestamp(): \DateTimeInterface
     {
         return $this->timestamp;
     }
