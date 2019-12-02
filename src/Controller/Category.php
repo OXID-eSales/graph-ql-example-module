@@ -27,6 +27,7 @@ class Category
      */
     public function category(string $id): CategoryDataObject
     {
+        /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
         if (!$category->load($id)) {
             throw new NotFoundException('Category with id "' . $id . '" does not exist');
@@ -59,7 +60,7 @@ class Category
     {
         $category = $category->createModel();
         if (!$category->save()) {
-            return 'SDF';
+            throw new \Exception();
         }
         return CategoryDataObject::createFromModel($category);
     }

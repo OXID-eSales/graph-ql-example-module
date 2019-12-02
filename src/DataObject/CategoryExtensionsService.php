@@ -28,6 +28,7 @@ class CategoryExtensionsService
      */
     public function getParent(Category $child): ?Category
     {
+        /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
         if (!$category->load($child->getId())) {
             return null;

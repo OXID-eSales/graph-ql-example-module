@@ -56,6 +56,7 @@ class Category
 
     public function createModel(): CategoryModel
     {
+        /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
         $category->assign([
             'oxtitle' => $this->name,
