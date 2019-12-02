@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [unreleased]
+
+### Added
+- more infos in [README](README.md) file on how to use
+- `timestamp` field for category
+- made category language aware
+
+### Changed
+- made unit tests real unit tests and run in travis
+- moved `parent` and `children` to servic
+
 ## [1.0.2] 2019-11-08
 
 ### Added
