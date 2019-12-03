@@ -47,9 +47,11 @@ class Category
         if ($parentid === null) {
             $parentid = 'oxrootid';
         }
+        /** @var CategoryListModel */
         $categoryList = oxNew(CategoryListModel::class);
         $categoryList->loadList();
         $categories = [];
+        /** @var CategoryModel $category */
         foreach ($categoryList as $category) {
             if ($category->oxcategories__oxparentid->value !== $parentid) {
                 continue;
