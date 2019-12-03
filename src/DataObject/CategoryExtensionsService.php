@@ -30,7 +30,7 @@ class CategoryExtensionsService
     {
         /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
-        if (!$category->load($child->getId())) {
+        if (!$category->load($child->getParentId())) {
             return null;
         }
         $category = Category::createFromModel($category);

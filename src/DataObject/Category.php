@@ -84,7 +84,7 @@ class Category
         return $this->title;
     }
 
-    public function getParentid(): string
+    public function getParentId(): string
     {
         return $this->parentid;
     }
