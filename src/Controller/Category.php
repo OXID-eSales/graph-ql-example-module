@@ -58,6 +58,9 @@ class Category
             }
             $categories[] = CategoryDataObject::createFromModel($category);
         }
+        if (!count($categories)) {
+            throw new NotFoundException('Category with id "' . $parentid . '" does not exist');
+        }
         return $categories;
     }
 

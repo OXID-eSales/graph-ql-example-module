@@ -36,11 +36,11 @@ class CategoryTest extends TestCase
         );
     }
 
-    public function testGetCategorieListWithoutParams()
+    public function testGetCategoriesWithNonExistentParentId()
     {
-        $queryResult = $this->query('query { categories {id, title}}');
+        $queryResult = $this->query('query { categories (parentid: "foobarbaz") {id, name}}');
         $this->assertEquals(
-            200,
+            404,
             $queryResult['status']
         );
     }
@@ -68,6 +68,18 @@ class CategoryTest extends TestCase
         $this->assertEquals(
             'foobar',
             $queryResult['body']['data']['categoryCreate']['title']
+        );
+    }
+
+    /**
+     * @depends testCreateSimpleCategory
+     */
+    public function testGetCategorieListWithoutParams()
+    {
+        $queryResult = $this->query('query { categories {id, name}}');
+        $this->assertEquals(
+            200,
+            $queryResult['status']
         );
     }
 
