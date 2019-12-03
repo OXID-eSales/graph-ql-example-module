@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Controller;
 
 use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
+use OxidEsales\EshopCommunity\Application\Model\CategoryList as CategoryListModel;
 use OxidEsales\GraphQL\Base\Exception\NotFoundException;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
@@ -46,7 +47,16 @@ class Category
         if ($parentid === null) {
             $parentid = 'oxrootid';
         }
-        return [];
+        $categoryList = oxNew(CategoryListModel::class);
+        $categoryList->loadList();
+        $categories = [];
+        foreach ($categoryList as $category) {
+            if ($category->oxcategories__oxparentid->value !== $parentid) {
+                continue;
+            }
+            $categories[] = CategoryDataObject::createFromModel($category);
+        }
+        return $categories;
     }
 
     /**
