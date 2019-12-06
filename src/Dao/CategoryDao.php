@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFilterInput;
 
 class CategoryDao implements CategoryDaoInterface
 {
@@ -57,19 +58,21 @@ class CategoryDao implements CategoryDaoInterface
     /**
      * @return Category[]
      */
-    public function getCategoriesByParentId(string $parentid, int $languageId, int $shopId): array
+    public function getCategories(CategoryFilterInput $filter, int $languageId, int $shopId): array
     {
         $categories = [];
         $queryBuilder = $this->queryBuilderFactory->create();
         $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
         $queryBuilder->select(['OXID', $title, 'OXPARENTID', 'OXTIMESTAMP'])
                      ->from('oxcategories')
-                     ->where($queryBuilder->expr()->andX(
-                         $queryBuilder->expr()->eq('OXPARENTID', ':oxparentid'),
-                         $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
-                     ))
-                     ->setParameter('oxparentid', $parentid)
+                     ->where('OXSHOPID = :shopid')
                      ->setParameter('shopid', $shopId);
+
+        $filters = array_filter($filter->getFilters());
+        foreach ($filters as $field => $fieldFilter) {
+            $fieldFilter->addToQuery($queryBuilder, $field);
+        }
+
         $result = $queryBuilder->execute();
 
         if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {

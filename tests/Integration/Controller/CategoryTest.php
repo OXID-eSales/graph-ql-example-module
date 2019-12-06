@@ -98,6 +98,22 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
+    public function testGetSimpleCategoryJustCreatedByFiltering()
+    {
+        $queryResult = $this->query('query { categories(filter: {title: {contains: "foo"}}) {id, name}}');
+        $this->assertEquals(
+            200,
+            $queryResult['status']
+        );
+        $this->assertEquals(
+            'foobar',
+            $queryResult['body']['data']['categories'][0]['name']
+        );
+    }
+
+    /**
+     * @depends testCreateSimpleCategory
+     */
     public function testGetSimpleCategoryJustCreatedWithExtras()
     {
         $queryResult = $this->query('query { categories {id, name, children { id }, parent { id }}}');

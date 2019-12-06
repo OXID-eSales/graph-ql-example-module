@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\GraphQL\Example\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFilterInput;
 
 interface CategoryDaoInterface
 {
@@ -18,7 +19,7 @@ interface CategoryDaoInterface
     /**
      * @return Category[]
      */
-    public function getCategoriesByParentId(string $parentid, int $languageId, int $shopId): array;
+    public function getCategories(CategoryFilterInput $filter, int $languageId, int $shopId): array;
 
     public function createCategory(Category $category, int $languageId, int $shopId): Category;
 }
