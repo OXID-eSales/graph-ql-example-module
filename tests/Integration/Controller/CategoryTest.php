@@ -52,7 +52,18 @@ class CategoryTest extends TestCase
     {
         $queryResult = $this->query('query { token (username: "admin", password: "admin") }');
         $this->setAuthToken($queryResult['body']['data']['token']);
-        $queryResult = $this->query('mutation { categoryCreate(category: {id: "10", title: "foobar"}) {id, title} }');
+        $queryResult = $this->query(
+            'mutation {
+                categoryCreate(
+                    category: {
+                        id: "10",
+                        title: "foobar"
+                    }
+                ) {
+                    id, title, timestamp
+                }
+            }'
+        );
         $this->assertEquals(
             200,
             $queryResult['status']
