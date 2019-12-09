@@ -23,7 +23,7 @@ class Category
     private $id;
 
     /** @var string */
-    private $name;
+    private $title;
 
     /** @var string */
     private $parentid;
@@ -33,12 +33,12 @@ class Category
 
     public function __construct(
         string $id,
-        string $name,
+        string $title,
         string $parentid,
         string $timestamp = "now"
     ) {
         $this->id = $id;
-        $this->name = $name;
+        $this->title = $title;
         $this->parentid = $parentid;
         $this->timestamp = new DateTimeImmutable($timestamp);
     }
@@ -56,9 +56,9 @@ class Category
     /**
      * @Field()
      */
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function getParentid(): string

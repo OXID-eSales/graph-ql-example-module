@@ -104,7 +104,7 @@ class CategoryDao implements CategoryDaoInterface
         ];
         $queryBuilder->setParameter('oxid', $category->getId())
                      ->setParameter('shopid', $shopId)
-                     ->setParameter('title', $category->getName())
+                     ->setParameter('title', $category->getTitle())
                      ->setParameter('parentid', $category->getParentid());
 
         $queryBuilder->insert('oxcategories')

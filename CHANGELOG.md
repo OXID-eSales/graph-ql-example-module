@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - made unit tests real unit tests and run in travis
 - moved `parent` and `children` to servic
+- renamed field `name` to `title`
 
 ## [1.0.2] 2019-11-08
 
