@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
+use DateTimeImmutable;
+use DateTimeInterface;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 
@@ -26,7 +28,7 @@ class Category
     /** @var string */
     private $parentid;
 
-    /** @var \DateTimeInterface */
+    /** @var DateTimeInterface */
     private $timestamp;
 
     public function __construct(
@@ -38,7 +40,7 @@ class Category
         $this->id = $id;
         $this->name = $name;
         $this->parentid = $parentid;
-        $this->timestamp = new \DateTimeImmutable($timestamp);
+        $this->timestamp = new DateTimeImmutable($timestamp);
     }
 
     /**
@@ -67,7 +69,7 @@ class Category
     /**
      * @Field()
      */
-    public function getTimestamp(): \DateTimeInterface
+    public function getTimestamp(): DateTimeInterface
     {
         return $this->timestamp;
     }

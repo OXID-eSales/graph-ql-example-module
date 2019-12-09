@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\GraphQL\Example\DataObject\Category;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilterInput;
 
+use function array_filter;
+
 class CategoryDao implements CategoryDaoInterface
 {
 
