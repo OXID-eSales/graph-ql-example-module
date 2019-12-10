@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
+use OxidEsales\GraphQL\Base\DataObject\IDFilterInput;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @ExtendType(class=Category::class)
@@ -49,8 +51,14 @@ class CategoryExtensionsService
      */
     public function getChildren(Category $parent): array
     {
-        return $this->categoryDao->getCategoriesByParentId(
-            $parent->getId(),
+        return $this->categoryDao->getCategories(
+            new CategoryFilterInput(
+                null,
+                new IDFilterInput(
+                    new ID($parent->getId())
+                ),
+                null
+            ),
             $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );

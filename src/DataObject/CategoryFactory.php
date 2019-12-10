@@ -19,7 +19,7 @@ class CategoryFactory
      */
     public static function createCategory(
         ?string $id,
-        ?string $name,
+        ?string $title,
         ?Category $parent = null
     ): Category {
         if ($id === null) {
@@ -32,12 +32,12 @@ class CategoryFactory
         } else {
             $parentid = $parent->getId();
         }
-        if ($name == null) {
-            $name = '';
+        if ($title == null) {
+            $title = '';
         }
         return new Category(
             $id,
-            $name,
+            $title,
             $parentid
         );
     }
