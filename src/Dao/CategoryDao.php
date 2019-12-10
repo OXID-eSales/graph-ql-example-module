@@ -30,16 +30,14 @@ class CategoryDao implements CategoryDaoInterface
     public function getCategoryById(string $id, int $languageId, int $shopId): ?Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
-        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
-
-        $queryBuilder->select(['OXID', $title, 'OXPARENTID', 'OXTIMESTAMP'])
-                     ->from('oxcategories')
-                     ->where($queryBuilder->expr()->andX(
-                         $queryBuilder->expr()->eq('OXID', ':oxid'),
-                         $queryBuilder->expr()->eq('OXSHOPID', ':shopid')
+        $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID', 'OXTIMESTAMP'])
+                     ->from(\getViewName(
+                         'oxcategories',
+                         $languageId,
+                         (string)$shopId
                      ))
-                     ->setParameter('oxid', $id)
-                     ->setParameter('shopid', $shopId);
+                     ->where('OXID = :oxid')
+                     ->setParameter('oxid', $id);
         $result = $queryBuilder->execute();
         if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {
             return null;
@@ -50,7 +48,7 @@ class CategoryDao implements CategoryDaoInterface
         }
         $category = new Category(
             $row['OXID'],
-            $row[$title],
+            $row['OXTITLE'],
             $row['OXPARENTID'],
             $row['OXTIMESTAMP']
         );
@@ -64,11 +62,12 @@ class CategoryDao implements CategoryDaoInterface
     {
         $categories = [];
         $queryBuilder = $this->queryBuilderFactory->create();
-        $title = $languageId === 0 ? "OXTITLE" : "OXTITLE_$languageId";
-        $queryBuilder->select(['OXID', $title, 'OXPARENTID', 'OXTIMESTAMP'])
-                     ->from('oxcategories')
-                     ->where('OXSHOPID = :shopid')
-                     ->setParameter('shopid', $shopId);
+        $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID', 'OXTIMESTAMP'])
+                     ->from(\getViewName(
+                         'oxcategories',
+                         $languageId,
+                         (string)$shopId
+                     ));
 
         $filters = array_filter($filter->getFilters());
         foreach ($filters as $field => $fieldFilter) {
@@ -84,7 +83,7 @@ class CategoryDao implements CategoryDaoInterface
         foreach ($result as $row) {
             $categories[] = new Category(
                 $row['OXID'],
-                $row[$title],
+                $row['OXTITLE'],
                 $row['OXPARENTID'],
                 $row['OXTIMESTAMP']
             );
