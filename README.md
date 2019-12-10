@@ -66,13 +66,13 @@ Response example
 
 ## Testing
 
-### Linting, Syntax and static analysis
+### Linting, syntax, static analysis and unit tests
 
 ```bash
 $ composer test
 ```
 
-### Unit tests
+### Integration tests
 
 - install this module into a running OXID eShop
 - change the `test_config.yml`
