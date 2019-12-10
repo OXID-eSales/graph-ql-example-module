@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - more infos in [README](README.md) file on how to use
 - `timestamp` field for category
 - made category language aware
+- filtering capability
 
 ### Changed
 - made unit tests real unit tests and run in travis
-- moved `parent` and `children` to servic
+- moved `parent` and `children` to service
 - renamed field `name` to `title`
 
 ## [1.0.2] 2019-11-08
