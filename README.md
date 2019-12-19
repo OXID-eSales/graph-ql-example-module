@@ -25,7 +25,7 @@ activate the GraphQL Example module.
 3. Execute example query to get all categories
 
 Request query
-```
+```graphql
 query {
   categories {
     id
@@ -35,7 +35,7 @@ query {
 ```
 
 Response example
-```
+```json
 {
     "data": {
         "categories": [
