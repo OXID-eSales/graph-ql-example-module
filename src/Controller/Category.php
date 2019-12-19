@@ -12,7 +12,7 @@ namespace OxidEsales\GraphQL\Example\Controller;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
-use OxidEsales\GraphQL\Example\DataObject\CategoryFilterInput;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -54,10 +54,10 @@ class Category
      * @Query()
      * @return CategoryDataObject[]
      */
-    public function categories(?CategoryFilterInput $filter = null): array
+    public function categories(?CategoryFilter $filter = null): array
     {
         return $this->categoryDao->getCategories(
-            $filter ?? new CategoryFilterInput(),
+            $filter ?? new CategoryFilter(),
             $this->legacyService->getLanguageId(),
             $this->legacyService->getShopId()
         );

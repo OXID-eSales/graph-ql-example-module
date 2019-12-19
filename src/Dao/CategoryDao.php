@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category;
-use OxidEsales\GraphQL\Example\DataObject\CategoryFilterInput;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
 
 use function array_filter;
 
@@ -58,7 +58,7 @@ class CategoryDao implements CategoryDaoInterface
     /**
      * @return Category[]
      */
-    public function getCategories(CategoryFilterInput $filter, int $languageId, int $shopId): array
+    public function getCategories(CategoryFilter $filter, int $languageId, int $shopId): array
     {
         $categories = [];
         $queryBuilder = $this->queryBuilderFactory->create();

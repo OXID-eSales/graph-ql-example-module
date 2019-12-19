@@ -9,22 +9,22 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\DataObject;
 
-use OxidEsales\GraphQL\Base\DataObject\BoolFilterInput;
-use OxidEsales\GraphQL\Base\DataObject\StringFilterInput;
-use OxidEsales\GraphQL\Base\DataObject\IDFilterInput;
+use OxidEsales\GraphQL\Base\DataObject\BoolFilter;
+use OxidEsales\GraphQL\Base\DataObject\StringFilter;
+use OxidEsales\GraphQL\Base\DataObject\IDFilter;
 use TheCodingMachine\GraphQLite\Annotations\Type;
 use TheCodingMachine\GraphQLite\Types\ID;
 
-class CategoryFilterInput
+class CategoryFilter
 {
     private $active;
     private $parentid;
     private $title;
 
     public function __construct(
-        ?BoolFilterInput $active = null,
-        ?IDFilterInput $parentid = null,
-        ?StringFilterInput $title = null
+        ?BoolFilter $active = null,
+        ?IDFilter $parentid = null,
+        ?StringFilter $title = null
     ) {
         $this->active = $active;
         $this->parentid = $parentid;
@@ -33,9 +33,9 @@ class CategoryFilterInput
 
     /**
      * @return array{
-     *  oxactive: ?BoolFilterInput,
-     *  oxparentid: ?IDFilterInput,
-     *  oxtitle: ?StringFilterInput
+     *  oxactive: ?BoolFilter,
+     *  oxparentid: ?IDFilter,
+     *  oxtitle: ?StringFilter
      * }
      */
     public function getFilters(): array
