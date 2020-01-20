@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\Example\Dao;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Example\DataObject\Category;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 
 use function array_filter;
 
@@ -27,7 +28,10 @@ class CategoryDao implements CategoryDaoInterface
         $this->queryBuilderFactory = $queryBuilderFactory;
     }
 
-    public function getCategoryById(string $id, int $languageId, int $shopId): ?Category
+    /**
+     * @throw CategoryNotFound
+     */
+    public function getCategoryById(string $id, int $languageId, int $shopId): Category
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->select(['OXID', 'OXTITLE', 'OXPARENTID', 'OXTIMESTAMP'])
@@ -40,11 +44,11 @@ class CategoryDao implements CategoryDaoInterface
                      ->setParameter('oxid', $id);
         $result = $queryBuilder->execute();
         if (!$result instanceof \Doctrine\DBAL\Driver\Statement) {
-            return null;
+            throw CategoryNotFound::byCategoryId($id);
         }
         $row = $result->fetch();
         if (!$row) {
-            return null;
+            throw CategoryNotFound::byCategoryId($id);
         }
         $category = new Category(
             $row['OXID'],
