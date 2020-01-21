@@ -21,7 +21,7 @@ class CategoryFilterFactory
         IDFilter $parentid
     ): CategoryFilter {
         return new CategoryFilter(
-            $parentid,
+            $parentid
         );
     }
 }
