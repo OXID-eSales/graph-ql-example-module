@@ -121,7 +121,7 @@ class CategoryTest extends TestCase
      */
     public function testGetSimpleCategoryJustCreatedById()
     {
-        $queryResult = $this->query('query { category (id: "10") {id, title}}');
+        $queryResult = $this->query('query { category (id: "10") {id, title, url}}');
         $this->assertEquals(
             200,
             $queryResult['status']
@@ -129,6 +129,10 @@ class CategoryTest extends TestCase
         $this->assertEquals(
             'foobar',
             $queryResult['body']['data']['category']['title']
+        );
+        $this->assertStringMatchesFormat(
+            'http%s/foobar/',
+            $queryResult['body']['data']['category']['url']
         );
     }
 
@@ -203,10 +207,11 @@ class CategoryTest extends TestCase
                 categoryCreate(
                     category: {
                         id: "20",
-                        title: "foobar",
+                        title: "foobaz",
                         parentid: "10"
                     }
                 ) {
+                    title
                     parent {
                         id
                     }
@@ -217,6 +222,10 @@ class CategoryTest extends TestCase
         $this->assertEquals(
             200,
             $queryResult['status']
+        );
+        $this->assertEquals(
+            "foobaz",
+            $queryResult['body']['data']['categoryCreate']['title']
         );
         $this->assertEquals(
             "10",
