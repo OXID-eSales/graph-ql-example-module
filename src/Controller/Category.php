@@ -48,7 +48,9 @@ class Category
         foreach ($categoryList as $category) {
             $categories[] = CategoryDataObject::createFromModel($category);
         }
-        // categories are special in a case where we may need to filter after the fact
+        // as the CategoryList model does not allow us to easily inject conditions
+        // into the SQL where clause, we filter after the fact. This stinks, but
+        // at the moment this is the easiest solution
         if ($filter !== null) {
             $parentIdFilter = $filter->getFilters()['oxparentid'];
             $categories = array_filter(
