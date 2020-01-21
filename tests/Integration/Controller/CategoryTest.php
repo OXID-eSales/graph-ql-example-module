@@ -38,7 +38,12 @@ class CategoryTest extends TestCase
 
     public function testGetCategoriesWithNonExistentParentId()
     {
-        $queryResult = $this->query('query { categories (parentid: "foobarbaz") {id, name}}');
+        $queryResult = $this->query('query {
+            categories(filter: { parentid: { equals: "oxrootid" } }) {
+                id
+                title
+            }
+        }');
         $this->assertEquals(
             200,
             $queryResult['status']
@@ -90,6 +95,30 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
+    public function testGetCategoriesWithParentId()
+    {
+        $queryResult = $this->query('query {
+            categories(filter: { parentid: { equals: "oxrootid" } }) {
+                id
+            }
+        }');
+        $this->assertEquals(
+            200,
+            $queryResult['status']
+        );
+        $this->assertCount(
+            1,
+            $queryResult['body']['data']['categories']
+        );
+        $this->assertEquals(
+            10,
+            $queryResult['body']['data']['categories'][0]['id']
+        );
+    }
+
+    /**
+     * @depends testCreateSimpleCategory
+     */
     public function testGetSimpleCategoryJustCreatedById()
     {
         $queryResult = $this->query('query { category (id: "10") {id, title}}');
@@ -109,22 +138,6 @@ class CategoryTest extends TestCase
     public function testGetSimpleCategoryJustCreated()
     {
         $queryResult = $this->query('query { categories {id, title}}');
-        $this->assertEquals(
-            200,
-            $queryResult['status']
-        );
-        $this->assertEquals(
-            'foobar',
-            $queryResult['body']['data']['categories'][0]['title']
-        );
-    }
-
-    /**
-     * @depends testCreateSimpleCategory
-     */
-    public function testGetSimpleCategoryJustCreatedByFiltering()
-    {
-        $queryResult = $this->query('query { categories(filter: {title: {contains: "foo"}}) {id, title}}');
         $this->assertEquals(
             200,
             $queryResult['status']
@@ -177,35 +190,36 @@ class CategoryTest extends TestCase
         );
     }
 
+    /**
+     * @depends testCreateSimpleCategory
+     */
     public function testCreateSubCategory()
     {
-        $this->markTestSkipped("Does not work although the query works on console.");
-
         $queryResult = $this->query('query { token (username: "admin", password: "admin") }');
         $this->setAuthToken($queryResult['body']['data']['token']);
 
-        $queryResult = $this->query('mutation { categoryCreate(category: {title: "foobar1"}) {id, title} }');
-        $parentid = $queryResult['body']['data']['categoryCreate']['id'];
-        $this->assertNotNull($parentid);
-
         $queryResult = $this->query(
-            "mutation {
+            'mutation {
                 categoryCreate(
                     category: {
-                        title: \"foobar2\"
-                    },
-                    parent: {id: \"$parentid\"}
+                        id: "20",
+                        title: "foobar",
+                        parentid: "10"
+                    }
                 ) {
-                    id, title, parent
+                    parent {
+                        id
+                    }
                 }
-            }"
+            }'
         );
+
         $this->assertEquals(
             200,
             $queryResult['status']
         );
         $this->assertEquals(
-            $parentid,
+            "10",
             $queryResult['body']['data']['categoryCreate']['parent']['id']
         );
     }

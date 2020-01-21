@@ -14,6 +14,7 @@ use DateTimeInterface;
 use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @Type()
@@ -49,7 +50,7 @@ class Category
         return new self(
             $category->getId(),
             (string)$category->oxcategories__oxtitle,
-            (string)$category->oxcategories__oxpartentid,
+            (string)$category->oxcategories__oxparentid,
             new \DateTimeImmutable((string)$category->oxcategories__oxtimestamp)
         );
     }
@@ -67,13 +68,11 @@ class Category
     }
 
     /**
-     * unique ID
-     *
-     * @Field(outputType="ID")
+     * @Field()
      */
-    public function getId(): string
+    public function getId(): ID
     {
-        return $this->id;
+        return new ID($this->id);
     }
 
     /**
@@ -84,9 +83,9 @@ class Category
         return $this->title;
     }
 
-    public function getParentId(): string
+    public function getParentId(): ID
     {
-        return $this->parentid;
+        return new ID($this->parentid);
     }
 
     /**

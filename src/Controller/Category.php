@@ -22,8 +22,6 @@ use TheCodingMachine\GraphQLite\Annotations\Right;
 class Category
 {
     /**
-     * category by ID
-     *
      * @Query()
      */
     public function category(string $id): CategoryDataObject
@@ -37,8 +35,6 @@ class Category
     }
 
     /**
-     * category list by parent ID
-     *
      * @Query()
      * @return CategoryDataObject[]
      */
@@ -52,12 +48,20 @@ class Category
         foreach ($categoryList as $category) {
             $categories[] = CategoryDataObject::createFromModel($category);
         }
+        // categories are special in a case where we may need to filter after the fact
+        if ($filter !== null) {
+            $parentIdFilter = $filter->getFilters()['oxparentid'];
+            $categories = array_filter(
+                $categories,
+                function (CategoryDataObject $category) use ($parentIdFilter) {
+                    return $parentIdFilter->equals() == $category->getParentId();
+                }
+            );
+        }
         return $categories;
     }
 
     /**
-     * create a category
-     *
      * @Mutation()
      * @Logged()
      * @Right("CATEGORY_CREATE")
