@@ -11,10 +11,14 @@ namespace OxidEsales\GraphQL\Example\Dao;
 
 use OxidEsales\GraphQL\Example\DataObject\Category;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 
 interface CategoryDaoInterface
 {
-    public function getCategoryById(string $id, int $languageId, int $shopId): ?Category;
+    /**
+     * @throws CategoryNotFound
+     */
+    public function getCategoryById(string $id, int $languageId, int $shopId): Category;
 
     /**
      * @return Category[]

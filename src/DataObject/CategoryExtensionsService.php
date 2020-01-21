@@ -12,6 +12,7 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 use OxidEsales\GraphQL\Base\DataObject\IDFilter;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -38,11 +39,15 @@ class CategoryExtensionsService
      */
     public function getParent(Category $child): ?Category
     {
-        return $this->categoryDao->getCategoryById(
-            $child->getParentid(),
-            $this->legacyService->getLanguageId(),
-            $this->legacyService->getShopId()
-        );
+        try {
+            return $this->categoryDao->getCategoryById(
+                $child->getParentid(),
+                $this->legacyService->getLanguageId(),
+                $this->legacyService->getShopId()
+            );
+        } catch (CategoryNotFound $e) {
+            return null;
+        }
     }
 
     /**
