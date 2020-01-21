@@ -55,9 +55,9 @@ class Category
     {
         return new self(
             $category->getId(),
-            (string)$category->oxcategories__oxtitle,
-            (string)$category->oxcategories__oxparentid,
-            new \DateTimeImmutable((string)$category->oxcategories__oxtimestamp),
+            (string)$category->getFieldData('oxtitle'),
+            (string)$category->getFieldData('oxparentid'),
+            new \DateTimeImmutable((string)$category->getFieldData('oxtimestamp')),
             $category
         );
     }
