@@ -15,7 +15,7 @@ use function sprintf;
 
 final class CategoryNotFound extends NotFound
 {
-    public static function byCategoryId(string $id): self
+    public static function byId(string $id): self
     {
         return new self(sprintf('Category was not found by id: %s', $id));
     }

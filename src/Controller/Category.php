@@ -29,7 +29,7 @@ class Category
         /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
         if (!$category->load($id)) {
-            throw CategoryNotFound::byCategoryId($id);
+            throw CategoryNotFound::byId($id);
         }
         return CategoryDataObject::createFromModel($category);
     }
