@@ -40,8 +40,12 @@ class CategoryTest extends TestCase
     {
         $queryResult = $this->query('query { categories (parentid: "foobarbaz") {id, name}}');
         $this->assertEquals(
-            404,
+            200,
             $queryResult['status']
+        );
+        $this->assertEquals(
+            [],
+            $queryResult['body']['data']['categories']
         );
     }
 
@@ -76,7 +80,7 @@ class CategoryTest extends TestCase
      */
     public function testGetCategorieListWithoutParams()
     {
-        $queryResult = $this->query('query { categories {id, name}}');
+        $queryResult = $this->query('query { categories {id, title}}');
         $this->assertEquals(
             200,
             $queryResult['status']
