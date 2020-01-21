@@ -21,6 +21,10 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 class Category
 {
+
+    /** @var ?CategoryModel */
+    private $category = null;
+
     /** @var string */
     private $id;
 
@@ -37,12 +41,14 @@ class Category
         string $id,
         string $title,
         string $parentid,
-        \DateTimeInterface $timestamp
+        \DateTimeInterface $timestamp,
+        ?CategoryModel $category = null
     ) {
         $this->id = $id;
         $this->title = $title;
         $this->parentid = $parentid;
         $this->timestamp = $timestamp;
+        $this->category = $category;
     }
 
     public static function createFromModel(CategoryModel $category): self
@@ -51,7 +57,8 @@ class Category
             $category->getId(),
             (string)$category->oxcategories__oxtitle,
             (string)$category->oxcategories__oxparentid,
-            new \DateTimeImmutable((string)$category->oxcategories__oxtimestamp)
+            new \DateTimeImmutable((string)$category->oxcategories__oxtimestamp),
+            $category
         );
     }
 
@@ -86,6 +93,17 @@ class Category
     public function getParentId(): ID
     {
         return new ID($this->parentid);
+    }
+
+    /**
+     * @Field
+     */
+    public function getUrl(): ?string
+    {
+        if ($this->category) {
+            return $this->category->getLink();
+        }
+        return null;
     }
 
     /**
