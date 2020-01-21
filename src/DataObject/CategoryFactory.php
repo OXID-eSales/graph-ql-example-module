@@ -19,7 +19,7 @@ class CategoryFactory
      */
     public static function createCategory(
         ?string $id = null,
-        ?string $name = null,
+        ?string $title = null,
         ?string $parentid = null
     ): Category {
         if ($id === null) {

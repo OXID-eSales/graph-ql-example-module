@@ -60,7 +60,7 @@ class Category
         $category = oxNew(CategoryModel::class);
         $category->assign([
             'oxid' => $this->id,
-            'oxtitle' => $this->name,
+            'oxtitle' => $this->title,
             'oxparentid' => $this->parentid
         ]);
         return $category;

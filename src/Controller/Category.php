@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\Example\Controller;
 
 use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
 use OxidEsales\EshopCommunity\Application\Model\CategoryList as CategoryListModel;
-use OxidEsales\GraphQL\Base\Exception\NotFoundException;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
@@ -31,7 +31,7 @@ class Category
         /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
         if (!$category->load($id)) {
-            throw new NotFoundException('Category with id "' . $id . '" does not exist');
+            throw CategoryNotFound::byCategoryId($id);
         }
         return CategoryDataObject::createFromModel($category);
     }
@@ -44,22 +44,13 @@ class Category
      */
     public function categories(?CategoryFilter $filter = null): array
     {
-        if ($parentid === null) {
-            $parentid = 'oxrootid';
-        }
         /** @var CategoryListModel */
         $categoryList = oxNew(CategoryListModel::class);
         $categoryList->loadList();
         $categories = [];
         /** @var CategoryModel $category */
         foreach ($categoryList as $category) {
-            if ($category->oxcategories__oxparentid->value !== $parentid) {
-                continue;
-            }
             $categories[] = CategoryDataObject::createFromModel($category);
-        }
-        if (!count($categories)) {
-            throw new NotFoundException('Category with id "' . $parentid . '" does not exist');
         }
         return $categories;
     }
