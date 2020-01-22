@@ -19,7 +19,7 @@ class CategoryFactory
      */
     public static function createCategory(
         ?string $id = null,
-        ?string $title = null,
+        string $title,
         ?string $parentid = null
     ): Category {
         if ($id === null) {
@@ -27,16 +27,10 @@ class CategoryFactory
             $utils = Registry::getUtilsObject();
             $id = $utils->generateUID();
         }
-        if ($parentid === null) {
-            $parentid = 'oxrootid';
-        }
-        if ($title == null) {
-            $title = '';
-        }
         return new Category(
             $id,
             $title,
-            $parentid,
+            $parentid ?? 'oxrootid',
             new \DateTimeImmutable("now")
         );
     }
