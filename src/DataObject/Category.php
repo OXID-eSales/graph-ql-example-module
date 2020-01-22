@@ -74,6 +74,11 @@ class Category
         return $category;
     }
 
+    public function getCategoryModel(): ?CategoryModel
+    {
+        return $this->category;
+    }
+
     /**
      * @Field()
      */
