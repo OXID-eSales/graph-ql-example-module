@@ -19,103 +19,63 @@ use TheCodingMachine\GraphQLite\Types\ID;
 /**
  * @Type()
  */
-class Category
+final class Category
 {
 
-    /** @var ?CategoryModel */
-    private $category = null;
-
-    /** @var string */
-    private $id;
-
-    /** @var string */
-    private $title;
-
-    /** @var string */
-    private $parentid;
-
-    /** @var DateTimeInterface */
-    private $timestamp;
+    /** @var CategoryModel */
+    private $category;
 
     public function __construct(
-        string $id,
-        string $title,
-        string $parentid,
-        \DateTimeInterface $timestamp,
-        ?CategoryModel $category = null
+        CategoryModel $category
     ) {
-        $this->id = $id;
-        $this->title = $title;
-        $this->parentid = $parentid;
-        $this->timestamp = $timestamp;
         $this->category = $category;
     }
 
-    public static function createFromModel(CategoryModel $category): self
-    {
-        return new self(
-            $category->getId(),
-            (string)$category->getFieldData('oxtitle'),
-            (string)$category->getFieldData('oxparentid'),
-            new \DateTimeImmutable((string)$category->getFieldData('oxtimestamp')),
-            $category
-        );
-    }
-
-    public function createModel(): CategoryModel
-    {
-        /** @var CategoryModel */
-        $category = oxNew(CategoryModel::class);
-        $category->assign([
-            'oxid' => $this->id,
-            'oxtitle' => $this->title,
-            'oxparentid' => $this->parentid
-        ]);
-        return $category;
-    }
-
-    public function getCategoryModel(): ?CategoryModel
+    public function getCategoryModel(): CategoryModel
     {
         return $this->category;
     }
 
     /**
-     * @Field()
+     * @Field
      */
     public function getId(): ID
     {
-        return new ID($this->id);
-    }
-
-    /**
-     * @Field()
-     */
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function getParentId(): ID
-    {
-        return new ID($this->parentid);
+        return new ID(
+            $this->category->getId()
+        );
     }
 
     /**
      * @Field
      */
-    public function getUrl(): ?string
+    public function getTitle(): string
     {
-        if ($this->category) {
-            return $this->category->getLink();
-        }
-        return null;
+        return (string)$this->category->getFieldData('oxtitle');
+    }
+
+    public function getParentId(): ID
+    {
+        return new ID(
+            $this->category->getFieldData('oxparentid')
+        );
     }
 
     /**
-     * @Field()
+     * @Field
+     */
+    public function getUrl(): string
+    {
+        return $this->category->getLink();
+    }
+
+    /**
+     * @Field
      */
     public function getTimestamp(): DateTimeInterface
     {
-        return $this->timestamp;
+        return new DateTimeImmutable(
+            $this->category->getFieldData('oxtimestamp')
+        );
     }
 }

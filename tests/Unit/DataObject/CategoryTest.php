@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\Example\Tests\Unit\DataObject;
 
 use PHPUnit\Framework\TestCase;
 use OxidEsales\GraphQL\Example\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFactory;
 use DateTimeImmutable;
 
 class CategoryTest extends TestCase
@@ -18,18 +19,18 @@ class CategoryTest extends TestCase
 
     /**
      * @covers OxidEsales\GraphQL\Example\DataObject\Category
+     * @covers OxidEsales\GraphQL\Example\DataObject\CategoryFactory
      */
     public function testBasicCategoryDataObject()
     {
         $id = 'random-id';
         $title = 'Kiteboards';
         $parentid = 'oxrootid';
-        $timestamp = '2019-12-09 15:44:19';
-        $category = new Category(
+
+        $category = CategoryFactory::createCategory(
             $id,
             $title,
-            $parentid,
-            new DateTimeImmutable($timestamp)
+            $parentid
         );
         $this->assertEquals(
             $id,
@@ -42,10 +43,6 @@ class CategoryTest extends TestCase
         $this->assertEquals(
             $parentid,
             $category->getParentid()
-        );
-        $this->assertEquals(
-            $timestamp,
-            $category->getTimestamp()->format('Y-m-d H:i:s')
         );
     }
 }
