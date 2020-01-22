@@ -62,6 +62,8 @@ class CategoryRepository
         if (!$categoryModel->save()) {
             throw new \Exception();
         }
-        return $category;
+        // reload model
+        $categoryModel->load($categoryModel->getId());
+        return new Category($categoryModel);
     }
 }
