@@ -15,7 +15,7 @@ use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilterFactory;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
-use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
+use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Types\ID;

@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Service;
 
-use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
-use OxidEsales\EshopCommunity\Application\Model\CategoryList as CategoryListModel;
+use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
+use OxidEsales\Eshop\Application\Model\CategoryList as CategoryListModel;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataObject\Category;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
