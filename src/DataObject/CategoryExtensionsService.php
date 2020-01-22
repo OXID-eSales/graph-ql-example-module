@@ -53,7 +53,7 @@ class CategoryExtensionsService
     {
         return $this->repository->getByFilter(
             CategoryFilterFactory::createCategoryFilter(
-                new IDFilter(new ID((string)$parent->getId()))
+                new IDFilter($parent->getId())
             )
         );
     }
