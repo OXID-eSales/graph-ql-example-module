@@ -29,14 +29,14 @@ class CategoryFactory
             $id = $utils->generateUID();
         }
         /** @var CategoryModel */
-        $model = oxNew(CategoryModel::class);
-        $model->assign([
+        $category = oxNew(CategoryModel::class);
+        $category->assign([
             'oxid' => $id,
             'oxtitle' => $title,
             'oxparentid' => $parentid ?? 'oxrootid'
         ]);
         return new Category(
-            $model
+            $category
         );
     }
 }
