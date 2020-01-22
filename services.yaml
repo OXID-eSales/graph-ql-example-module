@@ -23,3 +23,6 @@ services:
   OxidEsales\GraphQL\Example\Service\PermissionProvider:
     class: OxidEsales\GraphQL\Example\Service\PermissionProvider
     tags: ['graphql_permission_provider']
+
+  OxidEsales\GraphQL\Example\Service\CategoryRepository:
+    class: OxidEsales\GraphQL\Example\Service\CategoryRepository

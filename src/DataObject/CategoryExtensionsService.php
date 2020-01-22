@@ -12,7 +12,9 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 use OxidEsales\GraphQL\Base\DataObject\IDFilter;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFilterFactory;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
+use OxidEsales\GraphQL\Example\Service\CategoryRepository;
 use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
@@ -23,18 +25,24 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 class CategoryExtensionsService
 {
+    /** @var CategoryRepository */
+    private $repository;
+
+    public function __construct(CategoryRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Field()
      */
     public function getParent(Category $child): ?Category
     {
-        /** @var CategoryModel */
-        $category = oxNew(CategoryModel::class);
-        if (!$category->load((string)$child->getParentId())) {
+        try {
+            return $this->repository->getById((string)$child->getParentId());
+        } catch (CategoryNotFound $e) {
             return null;
         }
-        $category = Category::createFromModel($category);
-        return $category;
     }
 
     /**
@@ -43,6 +51,10 @@ class CategoryExtensionsService
      */
     public function getChildren(Category $parent): array
     {
-        return [];
+        return $this->repository->getByFilter(
+            CategoryFilterFactory::createCategoryFilter(
+                new IDFilter(new ID((string)$parent->getId()))
+            )
+        );
     }
 }
