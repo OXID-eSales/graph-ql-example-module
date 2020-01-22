@@ -18,27 +18,20 @@ class CategoryFactory
      * @Factory()
      */
     public static function createCategory(
-        ?string $id,
-        ?string $title,
-        ?Category $parent = null
+        ?string $id = null,
+        string $title,
+        ?string $parentid = null
     ): Category {
         if ($id === null) {
             /** @var \OxidEsales\EshopCommunity\Core\UtilsObject */
             $utils = Registry::getUtilsObject();
             $id = $utils->generateUID();
         }
-        if ($parent === null) {
-            $parentid = 'oxrootid';
-        } else {
-            $parentid = $parent->getId();
-        }
-        if ($title == null) {
-            $title = '';
-        }
         return new Category(
             $id,
             $title,
-            $parentid
+            $parentid ?? 'oxrootid',
+            new \DateTimeImmutable("now")
         );
     }
 }

@@ -11,14 +11,20 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 
 use DateTimeImmutable;
 use DateTimeInterface;
+use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Annotations\Type;
+use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @Type()
  */
 class Category
 {
+
+    /** @var ?CategoryModel */
+    private $category = null;
+
     /** @var string */
     private $id;
 
@@ -35,22 +41,45 @@ class Category
         string $id,
         string $title,
         string $parentid,
-        string $timestamp = "now"
+        \DateTimeInterface $timestamp,
+        ?CategoryModel $category = null
     ) {
         $this->id = $id;
         $this->title = $title;
         $this->parentid = $parentid;
-        $this->timestamp = new DateTimeImmutable($timestamp);
+        $this->timestamp = $timestamp;
+        $this->category = $category;
+    }
+
+    public static function createFromModel(CategoryModel $category): self
+    {
+        return new self(
+            $category->getId(),
+            (string)$category->getFieldData('oxtitle'),
+            (string)$category->getFieldData('oxparentid'),
+            new \DateTimeImmutable((string)$category->getFieldData('oxtimestamp')),
+            $category
+        );
+    }
+
+    public function createModel(): CategoryModel
+    {
+        /** @var CategoryModel */
+        $category = oxNew(CategoryModel::class);
+        $category->assign([
+            'oxid' => $this->id,
+            'oxtitle' => $this->title,
+            'oxparentid' => $this->parentid
+        ]);
+        return $category;
     }
 
     /**
-     * unique ID
-     *
-     * @Field(outputType="ID")
+     * @Field()
      */
-    public function getId(): string
+    public function getId(): ID
     {
-        return $this->id;
+        return new ID($this->id);
     }
 
     /**
@@ -61,9 +90,20 @@ class Category
         return $this->title;
     }
 
-    public function getParentid(): string
+    public function getParentId(): ID
     {
-        return $this->parentid;
+        return new ID($this->parentid);
+    }
+
+    /**
+     * @Field
+     */
+    public function getUrl(): ?string
+    {
+        if ($this->category) {
+            return $this->category->getLink();
+        }
+        return null;
     }
 
     /**

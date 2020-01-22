@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Controller;
 
-use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
-use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
 use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
+use OxidEsales\GraphQL\Example\Service\CategoryRepository;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
@@ -20,62 +20,38 @@ use TheCodingMachine\GraphQLite\Annotations\Right;
 
 class Category
 {
-    /** @var CategoryDaoInterface */
-    protected $categoryDao;
+    /** @var CategoryRepository */
+    private $repository;
 
-    /** @var LegacyServiceInterface */
-    private $legacyService = null;
-
-    public function __construct(
-        CategoryDaoInterface $categoryDao,
-        LegacyServiceInterface $legacyService
-    ) {
-        $this->categoryDao = $categoryDao;
-        $this->legacyService = $legacyService;
+    public function __construct(CategoryRepository $repository)
+    {
+        $this->repository = $repository;
     }
 
     /**
-     * category by ID
-     *
      * @Query()
      */
     public function category(string $id): CategoryDataObject
     {
-        return $this->categoryDao->getCategoryById(
-            $id,
-            $this->legacyService->getLanguageId(),
-            $this->legacyService->getShopId()
-        );
+        return $this->repository->getById($id);
     }
 
     /**
-     * category list by parent ID
-     *
      * @Query()
      * @return CategoryDataObject[]
      */
     public function categories(?CategoryFilter $filter = null): array
     {
-        return $this->categoryDao->getCategories(
-            $filter ?? new CategoryFilter(),
-            $this->legacyService->getLanguageId(),
-            $this->legacyService->getShopId()
-        );
+        return $this->repository->getByFilter($filter);
     }
 
     /**
-     * create a category
-     *
      * @Mutation()
      * @Logged()
      * @Right("CATEGORY_CREATE")
      */
     public function categoryCreate(CategoryDataObject $category): CategoryDataObject
     {
-        return $this->categoryDao->createCategory(
-            $category,
-            $this->legacyService->getLanguageId(),
-            $this->legacyService->getShopId()
-        );
+        return $this->repository->save($category);
     }
 }

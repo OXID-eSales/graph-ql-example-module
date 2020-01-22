@@ -11,6 +11,7 @@ namespace OxidEsales\GraphQL\Example\Tests\Unit\DataObject;
 
 use PHPUnit\Framework\TestCase;
 use OxidEsales\GraphQL\Example\DataObject\Category;
+use DateTimeImmutable;
 
 class CategoryTest extends TestCase
 {
@@ -28,7 +29,7 @@ class CategoryTest extends TestCase
             $id,
             $title,
             $parentid,
-            $timestamp
+            new DateTimeImmutable($timestamp)
         );
         $this->assertEquals(
             $id,

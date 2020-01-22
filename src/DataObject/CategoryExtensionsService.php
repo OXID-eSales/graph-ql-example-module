@@ -12,7 +12,10 @@ namespace OxidEsales\GraphQL\Example\DataObject;
 use OxidEsales\GraphQL\Base\DataObject\IDFilter;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
+use OxidEsales\GraphQL\Example\DataObject\CategoryFilterFactory;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
+use OxidEsales\GraphQL\Example\Service\CategoryRepository;
+use OxidEsales\EshopCommunity\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
 use TheCodingMachine\GraphQLite\Types\ID;
@@ -22,16 +25,12 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 class CategoryExtensionsService
 {
-    /** @var CategoryDaoInterface  */
-    private $categoryDao;
+    /** @var CategoryRepository */
+    private $repository;
 
-    /** @var LegacyServiceInterface  */
-    private $legacyService;
-
-    public function __construct(CategoryDaoInterface $categoryDao, LegacyServiceInterface $legacyService)
+    public function __construct(CategoryRepository $repository)
     {
-        $this->categoryDao = $categoryDao;
-        $this->legacyService = $legacyService;
+        $this->repository = $repository;
     }
 
     /**
@@ -40,11 +39,7 @@ class CategoryExtensionsService
     public function getParent(Category $child): ?Category
     {
         try {
-            return $this->categoryDao->getCategoryById(
-                $child->getParentid(),
-                $this->legacyService->getLanguageId(),
-                $this->legacyService->getShopId()
-            );
+            return $this->repository->getById((string)$child->getParentId());
         } catch (CategoryNotFound $e) {
             return null;
         }
@@ -56,16 +51,10 @@ class CategoryExtensionsService
      */
     public function getChildren(Category $parent): array
     {
-        return $this->categoryDao->getCategories(
-            new CategoryFilter(
-                null,
-                new IDFilter(
-                    new ID($parent->getId())
-                ),
-                null
-            ),
-            $this->legacyService->getLanguageId(),
-            $this->legacyService->getShopId()
+        return $this->repository->getByFilter(
+            CategoryFilterFactory::createCategoryFilter(
+                new IDFilter(new ID((string)$parent->getId()))
+            )
         );
     }
 }
