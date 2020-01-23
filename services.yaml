@@ -4,16 +4,16 @@ services:
     public: false
     autowire: true
 
-  OxidEsales\GraphQL\Example\DataObject\CategoryExtensionsService:
-      class: OxidEsales\GraphQL\Example\DataObject\CategoryExtensionsService
+  OxidEsales\GraphQL\Example\DataType\CategoryExtensionsService:
+      class: OxidEsales\GraphQL\Example\DataType\CategoryExtensionsService
       public: true
 
   OxidEsales\GraphQL\Example\Controller\:
     resource: 'src/Controller/*'
     public: true
 
-  OxidEsales\GraphQL\Example\DataObject\:
-    resource: 'src/DataObject/*Factory.php'
+  OxidEsales\GraphQL\Example\DataType\:
+    resource: 'src/DataType/*Factory.php'
     public: true
 
   OxidEsales\GraphQL\Example\Framework\NamespaceMapper:

@@ -7,20 +7,20 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Example\Tests\Integration\DataObject;
+namespace OxidEsales\GraphQL\Example\Tests\Integration\DataType;
 
 use PHPUnit\Framework\TestCase;
-use OxidEsales\GraphQL\Example\DataObject\Category;
-use OxidEsales\GraphQL\Example\DataObject\CategoryFactory;
+use OxidEsales\GraphQL\Example\DataType\Category;
+use OxidEsales\GraphQL\Example\DataType\CategoryFactory;
 use DateTimeImmutable;
 
 class CategoryTest extends TestCase
 {
     /**
-     * @covers OxidEsales\GraphQL\Example\DataObject\Category
-     * @covers OxidEsales\GraphQL\Example\DataObject\CategoryFactory
+     * @covers OxidEsales\GraphQL\Example\DataType\Category
+     * @covers OxidEsales\GraphQL\Example\DataType\CategoryFactory
      */
-    public function testBasicCategoryDataObject()
+    public function testBasicCategoryDataType()
     {
         $id = 'random-id';
         $title = 'Kiteboards';

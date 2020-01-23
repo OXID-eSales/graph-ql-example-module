@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Example\DataObject;
+namespace OxidEsales\GraphQL\Example\DataType;
 
-use OxidEsales\GraphQL\Base\DataObject\IDFilter;
+use OxidEsales\GraphQL\Base\DataType\IDFilter;
 use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
 use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
-use OxidEsales\GraphQL\Example\DataObject\CategoryFilterFactory;
+use OxidEsales\GraphQL\Example\DataType\CategoryFilterFactory;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
 use OxidEsales\Eshop\Application\Model\Category as CategoryModel;

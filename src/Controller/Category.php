@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\Controller;
 
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
-use OxidEsales\GraphQL\Example\DataObject\Category as CategoryDataObject;
-use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
+use OxidEsales\GraphQL\Example\DataType\Category as CategoryDataType;
+use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
 use TheCodingMachine\GraphQLite\Annotations\Logged;
 use TheCodingMachine\GraphQLite\Annotations\Mutation;
@@ -31,14 +31,14 @@ class Category
     /**
      * @Query()
      */
-    public function category(string $id): CategoryDataObject
+    public function category(string $id): CategoryDataType
     {
         return $this->repository->getById($id);
     }
 
     /**
      * @Query()
-     * @return CategoryDataObject[]
+     * @return CategoryDataType[]
      */
     public function categories(?CategoryFilter $filter = null): array
     {
@@ -50,7 +50,7 @@ class Category
      * @Logged()
      * @Right("CATEGORY_CREATE")
      */
-    public function categoryCreate(CategoryDataObject $category): CategoryDataObject
+    public function categoryCreate(CategoryDataType $category): CategoryDataType
     {
         return $this->repository->save($category);
     }

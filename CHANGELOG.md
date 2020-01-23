@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - `CategoryDao::getCategoryById` throws `CategoryNotFound` Exception and does not return `null` anymore
 - Use OXID models and not own data models
+- `DataObject` to `DataType`
 
 ## [1.1.0] 2019-12-10
 
