@@ -10,8 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\IDFilter;
-use OxidEsales\GraphQL\Base\Service\LegacyServiceInterface;
-use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 use OxidEsales\GraphQL\Example\DataType\CategoryFilterFactory;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
@@ -23,7 +21,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 /**
  * @ExtendType(class=Category::class)
  */
-class CategoryExtensionsService
+class CategoryRelationService
 {
     /** @var CategoryRepository */
     private $repository;

@@ -21,7 +21,6 @@ use TheCodingMachine\GraphQLite\Types\ID;
  */
 final class Category
 {
-
     /** @var CategoryModel */
     private $category;
 
