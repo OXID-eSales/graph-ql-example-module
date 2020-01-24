@@ -7,29 +7,28 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Example\Tests\Unit\DataObject;
+namespace OxidEsales\GraphQL\Example\Tests\Integration\DataType;
 
 use PHPUnit\Framework\TestCase;
-use OxidEsales\GraphQL\Example\DataObject\Category;
+use OxidEsales\GraphQL\Example\DataType\Category;
+use OxidEsales\GraphQL\Example\DataType\CategoryFactory;
 use DateTimeImmutable;
 
 class CategoryTest extends TestCase
 {
-
     /**
-     * @covers OxidEsales\GraphQL\Example\DataObject\Category
+     * @covers OxidEsales\GraphQL\Example\DataType\Category
+     * @covers OxidEsales\GraphQL\Example\DataType\CategoryFactory
      */
-    public function testBasicCategoryDataObject()
+    public function testBasicCategoryDataType()
     {
         $id = 'random-id';
         $title = 'Kiteboards';
         $parentid = 'oxrootid';
-        $timestamp = '2019-12-09 15:44:19';
-        $category = new Category(
+        $category = CategoryFactory::createCategory(
             $id,
             $title,
-            $parentid,
-            new DateTimeImmutable($timestamp)
+            $parentid
         );
         $this->assertEquals(
             $id,
@@ -42,10 +41,6 @@ class CategoryTest extends TestCase
         $this->assertEquals(
             $parentid,
             $category->getParentid()
-        );
-        $this->assertEquals(
-            $timestamp,
-            $category->getTimestamp()->format('Y-m-d H:i:s')
         );
     }
 }

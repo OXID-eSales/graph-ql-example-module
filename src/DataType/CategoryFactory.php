@@ -7,8 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Example\DataObject;
+namespace OxidEsales\GraphQL\Example\DataType;
 
+use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
 use OxidEsales\Eshop\Core\Registry;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
@@ -27,11 +28,15 @@ class CategoryFactory
             $utils = Registry::getUtilsObject();
             $id = $utils->generateUID();
         }
+        /** @var CategoryModel */
+        $category = oxNew(CategoryModel::class);
+        $category->assign([
+            'oxid' => $id,
+            'oxtitle' => $title,
+            'oxparentid' => $parentid ?? 'oxrootid'
+        ]);
         return new Category(
-            $id,
-            $title,
-            $parentid ?? 'oxrootid',
-            new \DateTimeImmutable("now")
+            $category
         );
     }
 }

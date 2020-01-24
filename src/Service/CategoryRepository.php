@@ -12,8 +12,8 @@ namespace OxidEsales\GraphQL\Example\Service;
 use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
 use OxidEsales\Eshop\Application\Model\CategoryList as CategoryListModel;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
-use OxidEsales\GraphQL\Example\DataObject\Category;
-use OxidEsales\GraphQL\Example\DataObject\CategoryFilter;
+use OxidEsales\GraphQL\Example\DataType\Category;
+use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
 
 class CategoryRepository
 {
@@ -25,7 +25,7 @@ class CategoryRepository
         if (!$category->load($id)) {
             throw CategoryNotFound::byId($id);
         }
-        return Category::createFromModel($category);
+        return new Category($category);
     }
 
     /**
@@ -39,7 +39,7 @@ class CategoryRepository
         $categories = [];
         /** @var CategoryModel $category */
         foreach ($categoryList as $category) {
-            $categories[] = Category::createFromModel($category);
+            $categories[] = new Category($category);
         }
         // as the CategoryList model does not allow us to easily inject conditions
         // into the SQL where clause, we filter after the fact. This stinks, but
@@ -58,10 +58,12 @@ class CategoryRepository
 
     public function save(Category $category): Category
     {
-        $category = $category->createModel();
-        if (!$category->save()) {
+        $categoryModel = $category->getCategoryModel();
+        if (!$categoryModel->save()) {
             throw new \Exception();
         }
-        return Category::createFromModel($category);
+        // reload model
+        $categoryModel->load($categoryModel->getId());
+        return new Category($categoryModel);
     }
 }

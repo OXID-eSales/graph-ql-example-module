@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\GraphQL\Example\DataObject;
+namespace OxidEsales\GraphQL\Example\DataType;
 
-use OxidEsales\GraphQL\Base\DataObject\IDFilter;
+use OxidEsales\GraphQL\Base\DataType\IDFilter;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
 class CategoryFilterFactory
