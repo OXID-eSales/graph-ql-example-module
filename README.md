@@ -20,11 +20,13 @@ After requiring the module, you need to head over to the OXID eShop admin and
 activate the GraphQL Example module.
 
 ### How to use
+
 1. Install [oxid-esales/graphql-base](https://github.com/OXID-eSales/graphql-base-module) module
 2. Get token (see base module documentation)
 3. Execute example query to get all categories
 
 Request query
+
 ```graphql
 query {
   categories {
