@@ -30,11 +30,6 @@ final class Category
         $this->category = $category;
     }
 
-    public function getCategoryModel(): CategoryModel
-    {
-        return $this->category;
-    }
-
     /**
      * @Field
      */
@@ -45,19 +40,19 @@ final class Category
         );
     }
 
+    public function getParentId(): ID
+    {
+        return new ID(
+            $this->category->getFieldData('oxparentid')
+        );
+    }
+
     /**
      * @Field
      */
     public function getTitle(): string
     {
         return (string)$this->category->getFieldData('oxtitle');
-    }
-
-    public function getParentId(): ID
-    {
-        return new ID(
-            $this->category->getFieldData('oxparentid')
-        );
     }
 
     /**
@@ -74,7 +69,7 @@ final class Category
     public function getTimestamp(): DateTimeInterface
     {
         return new DateTimeImmutable(
-            $this->category->getFieldData('oxtimestamp')
+            (string)$this->category->getFieldData('oxtimestamp')
         );
     }
 }
