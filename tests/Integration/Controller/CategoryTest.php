@@ -9,15 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Tests\Integration\Controller;
 
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
 use OxidEsales\GraphQL\Base\Tests\Integration\TestCase;
-use OxidEsales\GraphQL\Example\Dao\CategoryDaoInterface;
 
 class CategoryTest extends TestCase
 {
-    /** @var CategoryDaoInterface */
-    private $categoryDao;
-
     public function testGetSingleCategoryWithoutParam()
     {
         $queryResult = $this->query('query { category }');
