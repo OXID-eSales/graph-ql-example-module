@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Controller;
 
-use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataType\Category as CategoryDataType;
 use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
