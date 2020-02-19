@@ -42,7 +42,9 @@ class Category
      */
     public function categories(?CategoryFilter $filter = null): array
     {
-        return $this->repository->getByFilter($filter);
+        return $this->repository->getByFilter(
+            $filter ?? new CategoryFilter()
+        );
     }
 
     /**

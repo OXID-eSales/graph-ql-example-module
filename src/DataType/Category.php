@@ -30,6 +30,11 @@ final class Category
         $this->category = $category;
     }
 
+    public function getCategoryModel(): CategoryModel
+    {
+        return $this->category;
+    }
+
     /**
      * @Field
      */

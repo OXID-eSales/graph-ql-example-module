@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\IDFilter;
-use OxidEsales\GraphQL\Example\DataType\CategoryFilterFactory;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
 use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
@@ -50,7 +49,7 @@ class CategoryRelationService
     public function getChildren(Category $parent): array
     {
         return $this->repository->getByFilter(
-            CategoryFilterFactory::createCategoryFilter(
+            new CategoryFilter(
                 new IDFilter($parent->getId())
             )
         );

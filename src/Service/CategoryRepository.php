@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataType\Category;
 use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
+use PDO;
 
 use function array_filter;
 
@@ -42,9 +43,10 @@ class CategoryRepository
     /**
      * @return Category[]
      */
-    public function getByFilter(?CategoryFilter $filter = null): array
+    public function getByFilter(CategoryFilter $filter): array
     {
         $categories = [];
+        /** @var CategoryModel */
         $model = oxNew(CategoryModel::class);
 
         $queryBuilder = $this->queryBuilderFactory->create();
@@ -58,7 +60,7 @@ class CategoryRepository
         }
 
         $queryBuilder->getConnection()->setFetchMode(PDO::FETCH_ASSOC);
-        /** @var \Doctrine\DBAL\Statement $result */
+        /** @var \Doctrine\DBAL\Statement<array> $result */
         $result = $queryBuilder->execute();
         foreach ($result as $row) {
             $category = clone $model;
