@@ -4,6 +4,7 @@
     <file>tests/</file>
     <arg name="colors"/>
     <arg name="parallel" value="75"/>
+    <arg name="extensions" value="php"/>
     <arg value="np"/>
     <rule ref="PSR12" />
 </ruleset>
