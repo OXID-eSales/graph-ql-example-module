@@ -31,7 +31,7 @@ class CategoryTest extends TestCase
         );
         $this->assertSame(
             $id,
-            $category->getId()
+            (string)$category->getId()
         );
         $this->assertSame(
             $title,
@@ -39,7 +39,7 @@ class CategoryTest extends TestCase
         );
         $this->assertSame(
             $parentid,
-            $category->getParentid()
+            (string)$category->getParentid()
         );
     }
 }

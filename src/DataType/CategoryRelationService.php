@@ -20,7 +20,7 @@ use TheCodingMachine\GraphQLite\Types\ID;
 /**
  * @ExtendType(class=Category::class)
  */
-class CategoryRelationService
+final class CategoryRelationService
 {
     /** @var CategoryRepository */
     private $repository;
@@ -33,10 +33,12 @@ class CategoryRelationService
     /**
      * @Field()
      */
-    public function getParent(Category $child): ?Category
+    public function getParent(Category $category): ?Category
     {
         try {
-            return $this->repository->getById((string)$child->getParentId());
+            return $this->repository->getById(
+                (string)$category->getParentId()
+            );
         } catch (CategoryNotFound $e) {
             return null;
         }
@@ -46,11 +48,11 @@ class CategoryRelationService
      * @Field()
      * @return Category[]
      */
-    public function getChildren(Category $parent): array
+    public function getChildren(Category $category): array
     {
         return $this->repository->getByFilter(
             new CategoryFilter(
-                new IDFilter($parent->getId())
+                new IDFilter($category->getId())
             )
         );
     }

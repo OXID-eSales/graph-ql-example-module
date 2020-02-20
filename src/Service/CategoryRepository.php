@@ -19,7 +19,7 @@ use PDO;
 
 use function array_filter;
 
-class CategoryRepository
+final class CategoryRepository
 {
     /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
     private $queryBuilderFactory;

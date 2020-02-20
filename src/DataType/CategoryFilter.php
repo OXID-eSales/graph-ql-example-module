@@ -12,8 +12,9 @@ namespace OxidEsales\GraphQL\Example\DataType;
 use OxidEsales\GraphQL\Base\DataType\IDFilter;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-class CategoryFilter
+final class CategoryFilter
 {
+    /** @var ?IDFilter */
     private $parentid = null;
 
     public function __construct(

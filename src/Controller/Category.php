@@ -17,7 +17,7 @@ use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
-class Category
+final class Category
 {
     /** @var CategoryRepository */
     private $repository;

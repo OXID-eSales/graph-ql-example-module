@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\Example\Framework;
 
 use OxidEsales\GraphQL\Base\Framework\NamespaceMapperInterface;
 
-class NamespaceMapper implements NamespaceMapperInterface
+final class NamespaceMapper implements NamespaceMapperInterface
 {
     public function getControllerNamespaceMapping(): array
     {

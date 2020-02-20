@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
 use OxidEsales\Eshop\Core\Registry;
 use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-class CategoryFactory
+final class CategoryFactory
 {
     /**
      * @Factory()
