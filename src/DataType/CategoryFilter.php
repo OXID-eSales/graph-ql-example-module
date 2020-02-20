@@ -15,12 +15,22 @@ use TheCodingMachine\GraphQLite\Annotations\Factory;
 final class CategoryFilter
 {
     /** @var ?IDFilter */
-    private $parentid = null;
+    private $parentid;
 
     public function __construct(
         ?IDFilter $parentid = null
     ) {
         $this->parentid = $parentid;
+    }
+
+    /**
+     * @return array{oxparentid: IDFilter|null}
+     */
+    public function getFilters(): array
+    {
+        return [
+            'oxparentid' => $this->parentid,
+        ];
     }
 
     /**
@@ -32,17 +42,5 @@ final class CategoryFilter
         return new self(
             $parentid
         );
-    }
-
-    /**
-     * @return array{
-     *  oxparentid: IDFilter|null,
-     * }
-     */
-    public function getFilters(): array
-    {
-        return [
-            'oxparentid' => $this->parentid,
-        ];
     }
 }

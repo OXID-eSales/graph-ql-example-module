@@ -37,6 +37,7 @@ final class Category
 
     /**
      * @Query()
+     *
      * @return CategoryDataType[]
      */
     public function categories(?CategoryFilter $filter = null): array

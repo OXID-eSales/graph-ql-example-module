@@ -17,8 +17,8 @@ final class PermissionProvider implements PermissionProviderInterface
     {
         return [
             'admin' => [
-                'CATEGORY_CREATE'
-            ]
+                'CATEGORY_CREATE',
+            ],
         ];
     }
 }

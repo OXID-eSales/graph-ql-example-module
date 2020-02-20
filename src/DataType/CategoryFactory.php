@@ -19,22 +19,23 @@ final class CategoryFactory
      * @Factory()
      */
     public static function createCategory(
-        ?string $id = null,
+        ?string $id,
         string $title,
         ?string $parentid = null
     ): Category {
         if ($id === null) {
             /** @var \OxidEsales\Eshop\Core\UtilsObject */
             $utils = Registry::getUtilsObject();
-            $id = $utils->generateUID();
+            $id    = $utils->generateUID();
         }
         /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
         $category->assign([
-            'oxid' => $id,
-            'oxtitle' => $title,
-            'oxparentid' => $parentid ?? 'oxrootid'
+            'oxid'       => $id,
+            'oxtitle'    => $title,
+            'oxparentid' => $parentid ?? 'oxrootid',
         ]);
+
         return new Category(
             $category
         );

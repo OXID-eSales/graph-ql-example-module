@@ -1,20 +1,25 @@
 <?php
 
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
 declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Catalogue\Tests\Unit\DataType;
 
-use PHPUnit\Framework\TestCase;
-use OxidEsales\GraphQL\Example\DataType\Category;
 use OxidEsales\Eshop\Application\Model\Category as EshopCategoryModel;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\GraphQL\Example\DataType\Category;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers OxidEsales\GraphQL\Example\DataType\Category
  */
-class CategoryTest extends TestCase
+final class CategoryTest extends TestCase
 {
-    public function testBasicCategoryGetters()
+    public function testBasicCategoryGetters(): void
     {
         $category = new Category(
             new CategoryModelStub(
@@ -27,11 +32,11 @@ class CategoryTest extends TestCase
 
         $this->assertSame(
             'id',
-            (string)$category->getId()
+            (string) $category->getId()
         );
         $this->assertSame(
             'parentid',
-            (string)$category->getParentId()
+            (string) $category->getParentId()
         );
         $this->assertSame(
             'title',
@@ -46,7 +51,7 @@ class CategoryTest extends TestCase
 
 // phpcs:disable
 
-class CategoryModelStub extends EshopCategoryModel
+final class CategoryModelStub extends EshopCategoryModel
 {
     public function __construct(
         string $id = 'none',

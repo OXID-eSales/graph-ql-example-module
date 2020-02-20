@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Service;
 
+use Exception;
 use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
-use OxidEsales\Eshop\Application\Model\CategoryList as CategoryListModel;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataType\Category;
 use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
+use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use PDO;
 
 use function array_filter;
@@ -34,9 +34,11 @@ final class CategoryRepository
     {
         /** @var CategoryModel */
         $category = oxNew(CategoryModel::class);
+
         if (!$category->load($id)) {
             throw CategoryNotFound::byId($id);
         }
+
         return new Category($category);
     }
 
@@ -55,6 +57,7 @@ final class CategoryRepository
                      ->orderBy('oxid');
 
         $filters = array_filter($filter->getFilters());
+
         foreach ($filters as $field => $fieldFilter) {
             $fieldFilter->addToQuery($queryBuilder, $field);
         }
@@ -62,6 +65,7 @@ final class CategoryRepository
         $queryBuilder->getConnection()->setFetchMode(PDO::FETCH_ASSOC);
         /** @var \Doctrine\DBAL\Statement<array> $result */
         $result = $queryBuilder->execute();
+
         foreach ($result as $row) {
             $category = clone $model;
             $category->assign($row);
@@ -74,11 +78,13 @@ final class CategoryRepository
     public function save(Category $category): Category
     {
         $categoryModel = $category->getCategoryModel();
+
         if (!$categoryModel->save()) {
-            throw new \Exception();
+            throw new Exception();
         }
         // reload model
         $categoryModel->load($categoryModel->getId());
+
         return new Category($categoryModel);
     }
 }

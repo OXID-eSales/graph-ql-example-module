@@ -9,20 +9,18 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Tests\Integration\DataType;
 
-use PHPUnit\Framework\TestCase;
-use OxidEsales\GraphQL\Example\DataType\Category;
 use OxidEsales\GraphQL\Example\DataType\CategoryFactory;
-use DateTimeImmutable;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers OxidEsales\GraphQL\Example\DataType\Category
  */
-class CategoryTest extends TestCase
+final class CategoryTest extends TestCase
 {
-    public function testBasicCategoryDataType()
+    public function testBasicCategoryDataType(): void
     {
-        $id = 'random-id';
-        $title = 'Kiteboards';
+        $id       = 'random-id';
+        $title    = 'Kiteboards';
         $parentid = 'oxrootid';
         $category = CategoryFactory::createCategory(
             $id,
@@ -31,7 +29,7 @@ class CategoryTest extends TestCase
         );
         $this->assertSame(
             $id,
-            (string)$category->getId()
+            (string) $category->getId()
         );
         $this->assertSame(
             $title,
@@ -39,7 +37,7 @@ class CategoryTest extends TestCase
         );
         $this->assertSame(
             $parentid,
-            (string)$category->getParentid()
+            (string) $category->getParentid()
         );
     }
 }

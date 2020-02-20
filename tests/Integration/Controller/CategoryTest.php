@@ -11,9 +11,9 @@ namespace OxidEsales\GraphQL\Example\Tests\Integration\Controller;
 
 use OxidEsales\GraphQL\Base\Tests\Integration\TestCase;
 
-class CategoryTest extends TestCase
+final class CategoryTest extends TestCase
 {
-    public function testGetSingleCategoryWithoutParam()
+    public function testGetSingleCategoryWithoutParam(): void
     {
         $queryResult = $this->query('query { category }');
         $this->assertEquals(
@@ -22,7 +22,7 @@ class CategoryTest extends TestCase
         );
     }
 
-    public function testGetSingleCategoryWithNonExistantCategoryId()
+    public function testGetSingleCategoryWithNonExistantCategoryId(): void
     {
         $queryResult = $this->query('
             query {
@@ -38,7 +38,7 @@ class CategoryTest extends TestCase
         );
     }
 
-    public function testGetCategoriesWithNonExistentParentId()
+    public function testGetCategoriesWithNonExistentParentId(): void
     {
         $queryResult = $this->query('
             query {
@@ -62,7 +62,7 @@ class CategoryTest extends TestCase
         );
     }
 
-    public function testCreateSimpleCategory()
+    public function testCreateSimpleCategory(): void
     {
         $queryResult = $this->query('
             query {
@@ -95,7 +95,7 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
-    public function testGetCategorieListWithoutParams()
+    public function testGetCategorieListWithoutParams(): void
     {
         $queryResult = $this->query('
             query {
@@ -114,7 +114,7 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
-    public function testGetCategoriesWithParentId()
+    public function testGetCategoriesWithParentId(): void
     {
         $queryResult = $this->query('
             query {
@@ -144,7 +144,7 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
-    public function testGetSimpleCategoryJustCreatedById()
+    public function testGetSimpleCategoryJustCreatedById(): void
     {
         $queryResult = $this->query('
             query {
@@ -172,7 +172,7 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
-    public function testGetSimpleCategoryJustCreated()
+    public function testGetSimpleCategoryJustCreated(): void
     {
         $queryResult = $this->query('
             query {
@@ -195,7 +195,7 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
-    public function testGetSimpleCategoryJustCreatedWithExtras()
+    public function testGetSimpleCategoryJustCreatedWithExtras(): void
     {
         $queryResult = $this->query('
             query {
@@ -229,7 +229,7 @@ class CategoryTest extends TestCase
         );
     }
 
-    public function testCreateSimpleCategoryWithAutoId()
+    public function testCreateSimpleCategoryWithAutoId(): void
     {
         $queryResult = $this->query('
             query {
@@ -264,7 +264,7 @@ class CategoryTest extends TestCase
     /**
      * @depends testCreateSimpleCategory
      */
-    public function testCreateSubCategory()
+    public function testCreateSubCategory(): void
     {
         $queryResult = $this->query('
             query {
@@ -295,11 +295,11 @@ class CategoryTest extends TestCase
             $queryResult['status']
         );
         $this->assertEquals(
-            "foobaz",
+            'foobaz',
             $queryResult['body']['data']['categoryCreate']['title']
         );
         $this->assertEquals(
-            "10",
+            '10',
             $queryResult['body']['data']['categoryCreate']['parent']['id']
         );
     }

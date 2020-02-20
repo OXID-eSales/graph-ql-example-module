@@ -24,7 +24,8 @@
     "jakub-onderka/php-parallel-lint": "^1.0",
     "phpstan/phpstan": "^0.12",
     "oxid-esales/oxideshop-ce": "6.5",
-    "oxid-esales/oxideshop-unified-namespace-generator": "^2.0"
+    "oxid-esales/oxideshop-unified-namespace-generator": "^2.0",
+    "friendsofphp/php-cs-fixer": "^2.16"
   },
   "autoload": {
     "psr-4": {
@@ -33,14 +34,21 @@
     }
   },
   "scripts": {
-    "fix": "phpcbf",
-    "test:lint": "phpcs",
+    "fix:cbf": "phpcbf",
+    "fix:fixer": "php-cs-fixer fix",
+    "fix": [
+        "@fix:cbf",
+        "@fix:fixer"
+    ],
     "test:syntax": "parallel-lint src/",
+    "test:lint": "phpcs",
+    "test:lint-fixer": "php-cs-fixer fix --dry-run",
     "test:static": "phpstan analyse src/",
     "test:unit": "phpunit -c tests/phpunit.xml tests/Unit/",
     "test": [
-        "@test:lint",
         "@test:syntax",
+        "@test:lint",
+        "@test:lint-fixer",
         "@test:static",
         "@test:unit"
     ]

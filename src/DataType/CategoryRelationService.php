@@ -12,10 +12,8 @@ namespace OxidEsales\GraphQL\Example\DataType;
 use OxidEsales\GraphQL\Base\DataType\IDFilter;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
-use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
 use TheCodingMachine\GraphQLite\Annotations\ExtendType;
 use TheCodingMachine\GraphQLite\Annotations\Field;
-use TheCodingMachine\GraphQLite\Types\ID;
 
 /**
  * @ExtendType(class=Category::class)
@@ -37,7 +35,7 @@ final class CategoryRelationService
     {
         try {
             return $this->repository->getById(
-                (string)$category->getParentId()
+                (string) $category->getParentId()
             );
         } catch (CategoryNotFound $e) {
             return null;
@@ -46,6 +44,7 @@ final class CategoryRelationService
 
     /**
      * @Field()
+     *
      * @return Category[]
      */
     public function getChildren(Category $category): array

@@ -57,7 +57,7 @@ final class Category
      */
     public function getTitle(): string
     {
-        return (string)$this->category->getFieldData('oxtitle');
+        return (string) $this->category->getFieldData('oxtitle');
     }
 
     /**
@@ -74,7 +74,7 @@ final class Category
     public function getTimestamp(): DateTimeInterface
     {
         return new DateTimeImmutable(
-            (string)$this->category->getFieldData('oxtimestamp')
+            (string) $this->category->getFieldData('oxtimestamp')
         );
     }
 }

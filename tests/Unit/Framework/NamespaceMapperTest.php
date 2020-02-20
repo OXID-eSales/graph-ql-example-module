@@ -9,15 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Tests\Unit\Framework;
 
-use PHPUnit\Framework\TestCase;
 use OxidEsales\GraphQL\Example\Framework\NamespaceMapper;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers OxidEsales\GraphQL\Example\Framework\NamespaceMapper
  */
-class NamespaceMapperTest extends TestCase
+final class NamespaceMapperTest extends TestCase
 {
-    public function testNamespaceMapperReturnsCorrectNamespace()
+    public function testNamespaceMapperReturnsCorrectNamespace(): void
     {
         $namespaceMapper = new NamespaceMapper();
         $this->assertCount(
