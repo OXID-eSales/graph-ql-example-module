@@ -10,20 +10,33 @@ declare(strict_types=1);
 namespace OxidEsales\GraphQL\Example\DataType;
 
 use OxidEsales\GraphQL\Base\DataType\IDFilter;
+use TheCodingMachine\GraphQLite\Annotations\Factory;
 
-class CategoryFilter
+final class CategoryFilter
 {
-    private $parentid;
+    /** @var ?IDFilter */
+    private $parentid = null;
 
     public function __construct(
-        IDFilter $parentid
+        ?IDFilter $parentid = null
     ) {
         $this->parentid = $parentid;
     }
 
     /**
+     * @Factory()
+     */
+    public static function fromUserInput(
+        IDFilter $parentid
+    ): self {
+        return new self(
+            $parentid
+        );
+    }
+
+    /**
      * @return array{
-     *  oxparentid: IDFilter,
+     *  oxparentid: IDFilter|null,
      * }
      */
     public function getFilters(): array

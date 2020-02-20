@@ -12,13 +12,12 @@ namespace OxidEsales\GraphQL\Example\Tests\Unit\Framework;
 use PHPUnit\Framework\TestCase;
 use OxidEsales\GraphQL\Example\Framework\NamespaceMapper;
 
+/**
+ * @covers OxidEsales\GraphQL\Example\Framework\NamespaceMapper
+ */
 class NamespaceMapperTest extends TestCase
 {
-
-    /**
-     * @covers OxidEsales\GraphQL\Example\Framework\NamespaceMapper
-     */
-    public function testFooBar()
+    public function testNamespaceMapperReturnsCorrectNamespace()
     {
         $namespaceMapper = new NamespaceMapper();
         $this->assertCount(

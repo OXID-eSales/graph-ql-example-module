@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\GraphQL\Example\Controller;
 
-use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataType\Category as CategoryDataType;
 use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
 use OxidEsales\GraphQL\Example\Service\CategoryRepository;
@@ -18,7 +17,7 @@ use TheCodingMachine\GraphQLite\Annotations\Mutation;
 use TheCodingMachine\GraphQLite\Annotations\Query;
 use TheCodingMachine\GraphQLite\Annotations\Right;
 
-class Category
+final class Category
 {
     /** @var CategoryRepository */
     private $repository;
@@ -42,7 +41,9 @@ class Category
      */
     public function categories(?CategoryFilter $filter = null): array
     {
-        return $this->repository->getByFilter($filter);
+        return $this->repository->getByFilter(
+            $filter ?? new CategoryFilter()
+        );
     }
 
     /**

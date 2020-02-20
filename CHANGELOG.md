@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `CategoryDao::getCategoryById` throws `CategoryNotFound` Exception and does not return `null` anymore
 - Use OXID models and not own data models
 - `DataObject` to `DataType`
-- bumped dependency on `oxid-esales/graphql-base` to `^2.0.0`
+- bumped dependency on `oxid-esales/graphql-base` to `^2.2.0`
 
 ## [1.1.0] 2019-12-10
 

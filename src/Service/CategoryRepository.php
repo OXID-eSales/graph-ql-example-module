@@ -11,12 +11,24 @@ namespace OxidEsales\GraphQL\Example\Service;
 
 use OxidEsales\Eshop\Application\Model\Category as CategoryModel;
 use OxidEsales\Eshop\Application\Model\CategoryList as CategoryListModel;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\GraphQL\Example\Exception\CategoryNotFound;
 use OxidEsales\GraphQL\Example\DataType\Category;
 use OxidEsales\GraphQL\Example\DataType\CategoryFilter;
+use PDO;
 
-class CategoryRepository
+use function array_filter;
+
+final class CategoryRepository
 {
+    /** @var QueryBuilderFactoryInterface $queryBuilderFactory */
+    private $queryBuilderFactory;
+
+    public function __construct(
+        QueryBuilderFactoryInterface $queryBuilderFactory
+    ) {
+        $this->queryBuilderFactory = $queryBuilderFactory;
+    }
 
     public function getById(string $id): Category
     {
@@ -31,28 +43,31 @@ class CategoryRepository
     /**
      * @return Category[]
      */
-    public function getByFilter(?CategoryFilter $filter = null): array
+    public function getByFilter(CategoryFilter $filter): array
     {
-        /** @var CategoryListModel */
-        $categoryList = oxNew(CategoryListModel::class);
-        $categoryList->loadList();
         $categories = [];
-        /** @var CategoryModel $category */
-        foreach ($categoryList as $category) {
+        /** @var CategoryModel */
+        $model = oxNew(CategoryModel::class);
+
+        $queryBuilder = $this->queryBuilderFactory->create();
+        $queryBuilder->select('*')
+                     ->from($model->getViewName())
+                     ->orderBy('oxid');
+
+        $filters = array_filter($filter->getFilters());
+        foreach ($filters as $field => $fieldFilter) {
+            $fieldFilter->addToQuery($queryBuilder, $field);
+        }
+
+        $queryBuilder->getConnection()->setFetchMode(PDO::FETCH_ASSOC);
+        /** @var \Doctrine\DBAL\Statement<array> $result */
+        $result = $queryBuilder->execute();
+        foreach ($result as $row) {
+            $category = clone $model;
+            $category->assign($row);
             $categories[] = new Category($category);
         }
-        // as the CategoryList model does not allow us to easily inject conditions
-        // into the SQL where clause, we filter after the fact. This stinks, but
-        // at the moment this is the easiest solution
-        if ($filter !== null) {
-            $parentIdFilter = $filter->getFilters()['oxparentid'];
-            $categories = array_filter(
-                $categories,
-                function (Category $category) use ($parentIdFilter) {
-                    return $parentIdFilter->equals() == $category->getParentId();
-                }
-            );
-        }
+
         return $categories;
     }
 

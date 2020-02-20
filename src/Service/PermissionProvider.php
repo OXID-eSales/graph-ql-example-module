@@ -11,7 +11,7 @@ namespace OxidEsales\GraphQL\Example\Service;
 
 use OxidEsales\GraphQL\Base\Framework\PermissionProviderInterface;
 
-class PermissionProvider implements PermissionProviderInterface
+final class PermissionProvider implements PermissionProviderInterface
 {
     public function getPermissions(): array
     {

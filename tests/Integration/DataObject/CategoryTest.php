@@ -14,12 +14,11 @@ use OxidEsales\GraphQL\Example\DataType\Category;
 use OxidEsales\GraphQL\Example\DataType\CategoryFactory;
 use DateTimeImmutable;
 
+/**
+ * @covers OxidEsales\GraphQL\Example\DataType\Category
+ */
 class CategoryTest extends TestCase
 {
-    /**
-     * @covers OxidEsales\GraphQL\Example\DataType\Category
-     * @covers OxidEsales\GraphQL\Example\DataType\CategoryFactory
-     */
     public function testBasicCategoryDataType()
     {
         $id = 'random-id';
@@ -30,17 +29,17 @@ class CategoryTest extends TestCase
             $title,
             $parentid
         );
-        $this->assertEquals(
+        $this->assertSame(
             $id,
-            $category->getId()
+            (string)$category->getId()
         );
-        $this->assertEquals(
+        $this->assertSame(
             $title,
             $category->getTitle()
         );
-        $this->assertEquals(
+        $this->assertSame(
             $parentid,
-            $category->getParentid()
+            (string)$category->getParentid()
         );
     }
 }
